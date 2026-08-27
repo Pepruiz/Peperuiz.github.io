@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zapatas Aisladas - RC Estructuras</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+
+</head>
+<body>
+  <header id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">RC<span>ESTRUCTURAS</span></a>
+      <nav>
+        <ul>
+          <li><a href="index.html#about">Quiénes Somos</a></li>
+          <li><a href="index.html#services">Servicios</a></li>
+          <li><a href="index.html#projects">Proyectos</a></li>
+          <li><a href="herramienta-zapatas.html" class="active">Herramientas</a></li>
+          <li><a href="index.html#contact">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="tool-page-wrapper">
+    <!-- Tool Hero Header -->
+    <section class="project-hero" style="padding-top: calc(var(--header-height) + 2rem); padding-bottom: 2rem; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);">
+      <div class="container project-header" style="text-align: left; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+        <span class="project-category-tag">Herramienta de Ingeniería · Geotecnia & Cimentaciones</span>
+        <h1 style="font-size: 2.2rem; font-weight: 700; color: var(--text-primary); margin: 0.5rem 0 0.8rem;">Cálculo de Zapatas Aisladas Rígidas</h1>
+        <p class="subtitle" style="color: var(--text-secondary); font-size: 1.05rem; max-width: 820px; margin: 0; line-height: 1.6;">
+          Verificación de tensiones sobre el terreno, excentricidades y comprobación de seguridad frente a vuelco y deslizamiento conforme al Código Estructural (RD 470/2021) y CTE DB-SE-C.
+        </p>
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="tool-main-container">
+
+      <!-- SECCIÓN 1: DATOS DE ENTRADA -->
+      <section class="tool-section">
+        <div class="tool-section-label">1 · Datos de Entrada</div>
+        <div class="tool-inputs-grid">
+
+          <!-- Panel Datos Fijos -->
+          <div class="tool-panel panel-fixed">
+            <div class="tool-panel-header">
+              <h2>Datos Fijos de Proyecto</h2>
+              <span>Terreno, materiales y coeficientes</span>
+            </div>
+
+            <div class="tool-group">
+              <h3>Parámetros Geotécnicos</h3>
+              <div class="field-row">
+                <label>σ<sub>adm</sub> — Tensión admisible del terreno
+                  <span class="hint">1 kp/cm² ≈ 0,10 N/mm² (MPa)</span>
+                </label>
+                <div>
+                  <input type="text" inputmode="decimal" id="sigmaAdm" value="0,30">
+                  <div class="unit-suffix">N/mm²</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>δ — Ángulo de rozamiento terreno–zapata</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="delta" value="25">
+                  <div class="unit-suffix">º (grados)</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>c' — Cohesión efectiva del terreno</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="cohesion" value="0">
+                  <div class="unit-suffix">kN/m²</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-group">
+              <h3>Materiales</h3>
+              <div class="field-row">
+                <label>Densidad del hormigón armado
+                  <span class="hint">Para cálculo de peso propio de la zapata</span>
+                </label>
+                <div>
+                  <input type="text" inputmode="decimal" id="densidadHA" value="25">
+                  <div class="unit-suffix">kN/m³</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-group">
+              <h3>Criterios de Seguridad Normativos</h3>
+              <div class="field-row">
+                <label>Excentricidad constructiva mínima
+                  <span class="hint">Tolerancia de replanteo en obra</span>
+                </label>
+                <div>
+                  <input type="text" inputmode="decimal" id="eMin" value="2">
+                  <div class="unit-suffix">cm</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>Coef. de seguridad mínimo a vuelco (CS<sub>vuelco</sub>)</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="csVuelcoMin" value="1,8">
+                  <div class="unit-suffix">—</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>Coef. de seguridad mínimo a deslizamiento (CS<sub>desl</sub>)</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="csDeslMin" value="1,5">
+                  <div class="unit-suffix">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel Datos de la Zapata -->
+          <div class="tool-panel panel-variable">
+            <div class="tool-panel-header">
+              <h2>Geometría y Acciones</h2>
+              <span>Dimensiones particulares y cargas</span>
+            </div>
+
+            <div class="tool-group">
+              <h3>Geometría del Pilar</h3>
+              <div class="field-row">
+                <label>a — Dimensión en dirección A</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="a" value="40">
+                  <div class="unit-suffix">cm</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>b — Dimensión en dirección B</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="b" value="40">
+                  <div class="unit-suffix">cm</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-group">
+              <h3>Geometría de la Zapata</h3>
+              <div class="field-row">
+                <label>A — Dimensión en planta (lado A)</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="Azap" value="220">
+                  <div class="unit-suffix">cm</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>B — Dimensión en planta (lado B)</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="Bzap" value="220">
+                  <div class="unit-suffix">cm</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>H — Canto total de la zapata</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="Hzap" value="60">
+                  <div class="unit-suffix">cm</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-group">
+              <h3>Acciones de Cálculo en Cabeza de Pilar</h3>
+              <div class="field-row">
+                <label>N<sub>d</sub> — Axil vertical de cálculo</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="Nd" value="850">
+                  <div class="unit-suffix">kN</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>M<sub>d,x</sub> — Momento flector eje X</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="Mdx" value="40">
+                  <div class="unit-suffix">kN·m</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>M<sub>d,y</sub> — Momento flector eje Y</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="Mdy" value="40">
+                  <div class="unit-suffix">kN·m</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>V<sub>d,x</sub> — Esfuerzo cortante eje X</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="Vdx" value="15">
+                  <div class="unit-suffix">kN</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>V<sub>d,y</sub> — Esfuerzo cortante eje Y</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="Vdy" value="15">
+                  <div class="unit-suffix">kN</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-group">
+              <h3>Sobrecargas en Superficie</h3>
+              <div class="field-row">
+                <label>q<sub>perm</sub> — Relleno de tierras / solera</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="qPerm" value="5">
+                  <div class="unit-suffix">kN/m²</div>
+                </div>
+              </div>
+              <div class="field-row">
+                <label>q<sub>var</sub> — Sobrecarga de uso</label>
+                <div>
+                  <input type="text" inputmode="decimal" id="qVar" value="2">
+                  <div class="unit-suffix">kN/m²</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECCIÓN 2: GEOMETRÍA Y ALZADOS -->
+      <section class="tool-section">
+        <div class="tool-section-label">2 · Geometría y Alzados</div>
+        <div class="tool-drawing-grid">
+          <div class="tool-drawing-card">
+            <h3>Planta de la Cimentación</h3>
+            <div class="canvas"><svg id="svgPlanta" viewBox="0 0 460 340"></svg></div>
+          </div>
+          <div class="tool-drawing-card">
+            <h3>Alzado — Dirección A</h3>
+            <div class="canvas"><svg id="svgAlzadoA" viewBox="0 0 320 340"></svg></div>
+          </div>
+          <div class="tool-drawing-card">
+            <h3>Alzado — Dirección B</h3>
+            <div class="canvas"><svg id="svgAlzadoB" viewBox="0 0 320 340"></svg></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 3: PRESIONES BAJO LA ZAPATA -->
+      <section class="tool-section">
+        <div class="tool-section-label">3 · Presiones Sobre el Terreno</div>
+        <div class="tool-drawing-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="tool-drawing-card">
+            <h3>Diagrama de Presiones — Dirección A</h3>
+            <div class="canvas"><svg id="svgPresA" viewBox="0 0 420 250"></svg></div>
+          </div>
+          <div class="tool-drawing-card">
+            <h3>Diagrama de Presiones — Dirección B</h3>
+            <div class="canvas"><svg id="svgPresB" viewBox="0 0 420 250"></svg></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 4: VALORES INTERMEDIOS -->
+      <section class="tool-section">
+        <div class="tool-section-label">4 · Valores Intermedios de Cálculo</div>
+        <div class="interm">
+          <div class="interm-grid" id="intermGrid"></div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 5: COMPROBACIONES -->
+      <section class="tool-section">
+        <div class="tool-section-label">5 · Comprobaciones de Seguridad</div>
+        <div id="overallBanner" class="overall-banner"></div>
+        <div id="resultsGroups" class="results-groups"></div>
+      </section>
+
+      <!-- SECCIÓN 6: EXPLICACIÓN Y MEMORIA TÉCNICA -->
+      <section class="tool-section">
+        <div class="tool-section-label">6 · Criterios y Metodología de Cálculo</div>
+        <div class="explain">
+
+          <div class="explain-intro">
+            <h2>Transmisión de Cargas y Verificación Geotécnica</h2>
+            <p>Una zapata aislada rígida es un elemento de cimentación directa cuya función es transmitir y distribuir de manera segura las cargas concentradas procedentes de un soporte vertical sobre el terreno subyacente. A continuación se detallan las bases analíticas de cada una de las comprobaciones realizadas.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h3>Acciones Totales en la Base de la Cimentación</h3>
+              <p>El pilar transmite un axil de cálculo N<sub>d</sub>. En el plano de apoyo con el terreno debe considerarse además el peso propio de la zapata de hormigón armado (con una densidad estándar de 25 kN/m³) y las sobrecargas permanentes y de uso del relleno superior:</p>
+              <div class="eq">Peso propio = A · B · H · γ<sub>hormigón</sub></div>
+              <div class="eq">Carga superficial total = (q<sub>perm</sub> + q<sub>var</sub>) · A · B + Peso propio</div>
+              <div class="eq">N<sub>C</sub> = N<sub>d</sub> + Carga superficial total</div>
+              <p>N<sub>C</sub> representa la carga vertical neta descargada sobre el estrato de apoyo.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h3>Excentricidades y Momentos Resultantes en la Base</h3>
+              <p>La presencia de momentos flectores (M<sub>d</sub>) en la base del pilar traslada la resultante de carga fuera del centro geométrico de la zapata. A esta excentricidad de solicitación se añade la excentricidad accidental de ejecución e<sub>min</sub>:</p>
+              <div class="eq">e<sub>total</sub> = |M<sub>d</sub> / N<sub>C</sub>| + e<sub>min</sub></div>
+              <p>Asimismo, los esfuerzos cortantes horizontales (V<sub>d</sub>) generan un momento adicional sobre el plano de cimentación debido al brazo de palanca correspondiente al canto H de la zapata:</p>
+              <div class="eq">M<sub>C,x</sub> = N<sub>C</sub> · e<sub>B</sub> + V<sub>d,y</sub> · H &emsp;|&emsp; M<sub>C,y</sub> = N<sub>C</sub> · e<sub>A</sub> + V<sub>d,x</sub> · H</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <h3>Distribución de Tensiones sobre el Terreno</h3>
+              <p>Bajo la hipótesis de comportamiento rígido de la cimentación y respuesta elástica lineal del terreno, la distribución de presiones en la base se evalúa mediante la formulación de Navier generalizada:</p>
+              <div class="eq">σ = N<sub>C</sub> / (A·B) ± 6·M<sub>C,x</sub> / (B²·A) ± 6·M<sub>C,y</sub> / (A²·B)</div>
+              <p>Calculando las presiones en los cuatro vértices de la zapata se determinan los valores característicos: tensión máxima (σ<sub>máx</sub>), tensión media (σ<sub>med</sub>) y tensión mínima (σ<sub>mín</sub>).</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">4</div>
+            <div>
+              <h3>Comprobación de Resistencia del Terreno</h3>
+              <p>Frente a la tensión admisible σ<sub>adm</sub> procedente del estudio geotécnico, se exigen tres condiciones simultáneas:</p>
+              <div class="eq">σ<sub>media</sub> ≤ σ<sub>adm</sub> &emsp;(Comprobación principal de capacidad portante global)</div>
+              <div class="eq">σ<sub>máxima</sub> ≤ 1,25 · σ<sub>adm</sub> &emsp;(Tolerancia local de punta admisible en esquinas)</div>
+              <div class="eq">σ<sub>mínima</sub> > 0 &emsp;(Condición de no despegue: base completamente comprimida)</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">5</div>
+            <div>
+              <h3>Estabilidad Global: Seguridad a Vuelco y Deslizamiento</h3>
+              <p>La estabilidad de la cimentación se garantiza verificando los coeficientes de seguridad normativos frente a los estados límites de equilibrio:</p>
+              <div class="eq">CS<sub>vuelco</sub> = Momento estabilizador / Momento volcador ≥ 1,80</div>
+              <div class="eq">CS<sub>deslizamiento</sub> = (N<sub>C</sub> · tan δ + c' · A·B) / H<sub>d</sub> ≥ 1,50</div>
+              <div class="aside"><strong>Nota sobre unidades:</strong> Las tensiones sobre el terreno se expresan en N/mm² (MPa). Para convertir desde kp/cm², se aplica la equivalencia directa 1 kp/cm² ≈ 0,10 N/mm².</div>
+            </div>
+          </div>
+
+          <div class="explain-cta">
+            <h3>Alcance Técnico de la Herramienta</h3>
+            <p>Esta aplicación realiza la comprobación geotécnica y de estabilidad dimensional de zapatas aisladas rígidas. Para completar el proyecto de ejecución y su validación colegial/OCT, se requiere el dimensionamiento del hormigón armado:</p>
+            <ul>
+              <li>Cálculo y distribución de armaduras longitudinales inferiores y de reparto</li>
+              <li>Comprobación de cuantías mínimas y máximas según Código Estructural</li>
+              <li>Estado Límite de Fisuración y comprobación de anclaje de armaduras</li>
+              <li>Verificación del Estado Límite de Punzonamiento en el perímetro crítico del pilar</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Standard Footer -->
+  <footer>
+    <div class="container footer-content">
+      <p>&copy; 2026 RC Estructuras. Todos los derechos reservados.</p>
+      <div class="footer-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="index.html">Inicio</a>
+        <a href="herramienta-zapatas.html">Herramientas</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // Acepta coma o punto como separador decimal
+  function parseNum(id){
+    const elm = $(id);
+    const raw = (elm.value||'').trim().replace(/\s/g,'').replace(',', '.');
+    const v = parseFloat(raw);
+    const ok = raw !== '' && isFinite(v);
+    elm.classList.toggle('invalid', !ok);
+    return ok ? v : 0;
+  }
+
+  function fmt(v, dec){
+    if (v === Infinity) return "∞";
+    if (!isFinite(v) || isNaN(v)) return "—";
+    dec = (dec===undefined) ? 2 : dec;
+    return v.toLocaleString('es-ES',{minimumFractionDigits:dec, maximumFractionDigits:dec});
+  }
+
+  // ---------------------------------------------------------------
+  // CÁLCULO — apartados 5.2, 5.3, 5.8 y 5.9 de la memoria
+  // ---------------------------------------------------------------
+  function calcular(){
+    const sigmaAdm = parseNum('sigmaAdm');
+    const deltaDeg = parseNum('delta');
+    const cohesion = parseNum('cohesion');
+    const densidadHA = parseNum('densidadHA');
+    const eMin_cm = parseNum('eMin');
+    const csVuelcoMin = parseNum('csVuelcoMin');
+    const csDeslMin = parseNum('csDeslMin');
+
+    const a_cm = parseNum('a'), b_cm = parseNum('b');
+    const A_cm = parseNum('Azap'), B_cm = parseNum('Bzap'), H_cm = parseNum('Hzap');
+    const Nd = parseNum('Nd'), Mdx = parseNum('Mdx'), Mdy = parseNum('Mdy');
+    const Vdx = parseNum('Vdx'), Vdy = parseNum('Vdy');
+    const qPerm = parseNum('qPerm'), qVar = parseNum('qVar');
+
+    const a=a_cm/100, b=b_cm/100, A=A_cm/100, B=B_cm/100, H=H_cm/100;
+    const eMin = eMin_cm/100;
+
+    const geometriaValida = A>0 && B>0 && H>0;
+
+    // 5.2 — acciones de cálculo en la base
+    const PPzapata = A*B*H*densidadHA;
+    const Czapata = (qPerm+qVar)*A*B + PPzapata;
+    const denom = (Nd + Czapata) || 1e-9;
+    // La excentricidad constructiva se SUMA al descentramiento real de la carga:
+    // ambos efectos pueden darse simultáneamente y en el mismo sentido.
+    // Se toma el valor absoluto del término de carga para que la suma sea siempre desfavorable.
+    const eA = Math.abs(Mdy/denom) + eMin;
+    const eB = Math.abs(Mdx/denom) + eMin;
+    const NC = Nd + Czapata;
+    const MCx = NC*eB + Vdy*H;
+    const MCy = NC*eA + Vdx*H;
+
+    // 5.3 — tensiones sobre el terreno (kN/m² -> N/mm²)
+    const area = A*B;
+    function sigmaCorner(sx, sy){
+      if(!geometriaValida) return NaN;
+      return (NC/area + sx*6*MCx/(B*B*A) + sy*6*MCy/(A*A*B)) * 0.001;
+    }
+    const s1 = sigmaCorner( 1,  1);
+    const s2 = sigmaCorner( 1, -1);
+    const s3 = sigmaCorner(-1,  1);
+    const s4 = sigmaCorner(-1, -1);
+    const esquinas = [s1,s2,s3,s4];
+    const sigmaMax = Math.max(...esquinas);
+    const sigmaMin = Math.min(...esquinas);
+    const sigmaMed = esquinas.reduce((s,v)=>s+v,0)/4;
+
+    const cumpleSigmaMax = geometriaValida && sigmaMax <= 1.25*sigmaAdm + 1e-12;
+    const cumpleSigmaMed = geometriaValida && sigmaMed <= sigmaAdm + 1e-12;
+    const cumpleSigmaMin = geometriaValida && sigmaMin > 0;
+
+    // Presiones de borde para los diagramas (media a lo largo del borde)
+    const sigmaAplus  = geometriaValida ? (NC/area + 6*MCy/(A*A*B))*0.001 : NaN;
+    const sigmaAminus = geometriaValida ? (NC/area - 6*MCy/(A*A*B))*0.001 : NaN;
+    const sigmaBplus  = geometriaValida ? (NC/area + 6*MCx/(B*B*A))*0.001 : NaN;
+    const sigmaBminus = geometriaValida ? (NC/area - 6*MCx/(B*B*A))*0.001 : NaN;
+
+    // 5.8 — vuelco
+    const CSvuelcoA = Math.abs(MCy)>1e-9 ? NC*(A/2)/Math.abs(MCy) : Infinity;
+    const CSvuelcoB = Math.abs(MCx)>1e-9 ? NC*(B/2)/Math.abs(MCx) : Infinity;
+    const CSvuelco = Math.min(CSvuelcoA, CSvuelcoB);
+    const cumpleVuelco = geometriaValida && CSvuelco >= csVuelcoMin;
+
+    // 5.9 — deslizamiento
+    const Hd = Math.sqrt(Vdx*Vdx + Vdy*Vdy);
+    const CSdesl = Hd>1e-9 ? (NC*Math.tan(deltaDeg*Math.PI/180) + cohesion*A*B)/Hd : Infinity;
+    const cumpleDesl = geometriaValida && CSdesl >= csDeslMin;
+
+    return {
+      geometriaValida,
+      geom:{a_cm,b_cm,A_cm,B_cm,H_cm},
+      acc:{PPzapata,Czapata,NC,eA,eB,MCx,MCy},
+      terreno:{s1,s2,s3,s4,sigmaMax,sigmaMed,sigmaMin,sigmaAdm,
+               cumpleSigmaMax,cumpleSigmaMed,cumpleSigmaMin,
+               sigmaAplus,sigmaAminus,sigmaBplus,sigmaBminus},
+      vuelco:{CSvuelco,csVuelcoMin,cumpleVuelco},
+      desl:{Hd,CSdesl,csDeslMin,cumpleDesl}
+    };
+  }
+
+  // ---------------------------------------------------------------
+  // DIBUJO
+  // ---------------------------------------------------------------
+  const NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function clearSvg(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+  function txt(svg, x, y, content, cls, anchor){
+    const t = el('text',{x, y, class:cls||'dim-text', 'text-anchor':anchor||'middle'});
+    t.textContent = content;
+    svg.appendChild(t);
+    return t;
+  }
+  function dimLine(svg, x1,y1,x2,y2, label, horizontal){
+    svg.appendChild(el('line',{x1,y1,x2,y2,class:'dim-line'}));
+    const s = 4;
+    if(horizontal){
+      svg.appendChild(el('line',{x1:x1,y1:y1-s,x2:x1,y2:y1+s,class:'dim-line'}));
+      svg.appendChild(el('line',{x1:x2,y1:y2-s,x2:x2,y2:y2+s,class:'dim-line'}));
+      txt(svg,(x1+x2)/2, y1-6, label);
+    } else {
+      svg.appendChild(el('line',{x1:x1-s,y1:y1,x2:x1+s,y2:y1,class:'dim-line'}));
+      svg.appendChild(el('line',{x1:x2-s,y1:y2,x2:x2+s,y2:y2,class:'dim-line'}));
+      const t = txt(svg, x1+14, (y1+y2)/2, label);
+      t.setAttribute('transform',`rotate(-90 ${x1+14} ${(y1+y2)/2})`);
+    }
+  }
+  function extLine(svg,x1,y1,x2,y2){
+    svg.appendChild(el('line',{x1,y1,x2,y2,class:'dim-line','stroke-dasharray':'2,2','stroke-width':0.6}));
+  }
+
+  function drawPlanta(r){
+    const svg = $('svgPlanta');
+    clearSvg(svg);
+    if(!r.geometriaValida) return;
+    const t = r.terreno;
+    const VW=460, VH=340, padL=54, padR=34, padT=34, padB=46;
+    const availW = VW-padL-padR, availH = VH-padT-padB;
+    const scale = Math.min(availW/r.geom.A_cm, availH/r.geom.B_cm);
+    const fw = r.geom.A_cm*scale, fh = r.geom.B_cm*scale;
+    const fx = padL + (availW-fw)/2, fy = padT + (availH-fh)/2;
+    const cw = Math.max(r.geom.a_cm*scale, 2), ch = Math.max(r.geom.b_cm*scale, 2);
+    const cx = fx + (fw-cw)/2, cy = fy + (fh-ch)/2;
+
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,class:'concrete',rx:2}));
+    svg.appendChild(el('rect',{x:cx,y:cy,width:cw,height:ch,class:'column',rx:1}));
+
+    extLine(svg, fx, fy+fh, fx, fy+fh+22);
+    extLine(svg, fx+fw, fy+fh, fx+fw, fy+fh+22);
+    dimLine(svg, fx, fy+fh+18, fx+fw, fy+fh+18, `A = ${fmt(r.geom.A_cm,0)} cm`, true);
+
+    extLine(svg, fx, fy, fx-22, fy);
+    extLine(svg, fx, fy+fh, fx-22, fy+fh);
+    dimLine(svg, fx-18, fy, fx-18, fy+fh, `B = ${fmt(r.geom.B_cm,0)} cm`, false);
+
+    txt(svg, cx+cw/2, cy-6, `a = ${fmt(r.geom.a_cm,0)} cm`);
+    txt(svg, cx+cw+6, cy+ch/2+4, `b = ${fmt(r.geom.b_cm,0)} cm`, 'dim-text', 'start');
+
+    // tensiones en esquinas
+    
+    txt(svg, fx+3,    fy-6,      `σ ${fmt(t.s1,3)}`, 'corner-text', 'start');
+    txt(svg, fx+fw-3, fy-6,      `σ ${fmt(t.s2,3)}`, 'corner-text', 'end');
+    txt(svg, fx+3,    fy+fh+13,  `σ ${fmt(t.s3,3)}`, 'corner-text', 'start');
+    txt(svg, fx+fw-3, fy+fh+13,  `σ ${fmt(t.s4,3)}`, 'corner-text', 'end');
+  }
+
+  function drawAlzado(svgId, widthLabel, width_cm, H_cm, colWidth_cm, colLabel){
+    const svg = $(svgId);
+    clearSvg(svg);
+    if(!(width_cm>0 && H_cm>0)) return;
+    const VW=320, VH=340, padL=50, padR=34, padT=70, padB=46;
+    const availW = VW-padL-padR, availH = VH-padT-padB;
+    const scale = Math.min(availW/width_cm, availH/H_cm);
+    const fw = width_cm*scale, fh = H_cm*scale;
+    const fx = padL + (availW-fw)/2, fy = padT + (availH-fh);
+    const cw = Math.max(colWidth_cm*scale, 2);
+    const cx = fx + (fw-cw)/2;
+    const stubH = 55;
+
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,class:'concrete'}));
+    const hatchN = Math.max(4, Math.floor(fw/14));
+    for(let i=-3;i<hatchN+3;i++){
+      const xx = fx + i*14;
+      svg.appendChild(el('line',{x1:Math.max(xx,fx),y1:fy+fh,x2:Math.min(xx+fh,fx+fw),y2:fy,class:'hatch-line'}));
+    }
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,fill:'none',stroke:'var(--blueprint)','stroke-width':1.6}));
+
+    svg.appendChild(el('rect',{x:cx,y:fy-stubH,width:cw,height:stubH+2,class:'column'}));
+    svg.appendChild(el('line',{x1:cx-4,y1:fy-stubH,x2:cx+cw+4,y2:fy-stubH,stroke:'var(--rebar)','stroke-width':1.2,'stroke-dasharray':'3,2'}));
+
+    extLine(svg, fx, fy+fh, fx, fy+fh+22);
+    extLine(svg, fx+fw, fy+fh, fx+fw, fy+fh+22);
+    dimLine(svg, fx, fy+fh+18, fx+fw, fy+fh+18, `${widthLabel} = ${fmt(width_cm,0)} cm`, true);
+
+    extLine(svg, fx+fw, fy, fx+fw+22, fy);
+    extLine(svg, fx+fw, fy+fh, fx+fw+22, fy+fh);
+    dimLine(svg, fx+fw+18, fy, fx+fw+18, fy+fh, `H = ${fmt(H_cm,0)} cm`, false);
+
+    txt(svg, cx+cw/2, fy-stubH-8, `${colLabel} = ${fmt(colWidth_cm,0)} cm`);
+  }
+
+  function drawPresiones(svgId, r, sMinusEdge, sPlusEdge, width_cm, label){
+    const svg = $(svgId);
+    clearSvg(svg);
+    if(!r.geometriaValida) return;
+
+    const VW=420, VH=250, padL=52, padR=52;
+    const fw = VW-padL-padR;
+    const fx = padL, fy = 34, fh = 26;
+
+    // zapata (canto esquemático)
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,class:'concrete'}));
+    txt(svg, fx+fw/2, fy-10, `Zapata — dirección ${label}`);
+
+    const sA = sMinusEdge, sB = sPlusEdge;
+    const maxAbs = Math.max(Math.abs(sA), Math.abs(sB), r.terreno.sigmaAdm, 1e-6);
+    const maxPx = 96;
+    const scale = maxPx/maxAbs;
+
+    const yBase = fy+fh+6;
+    const hA = Math.max(sA,0)*scale;
+    const hB = Math.max(sB,0)*scale;
+
+    // polígono de presiones (colgando hacia abajo)
+    const pts = `${fx},${yBase} ${fx+fw},${yBase} ${fx+fw},${yBase+hB} ${fx},${yBase+hA}`;
+    svg.appendChild(el('polygon',{points:pts, class:'press-fill'}));
+
+    // línea del terreno
+    svg.appendChild(el('line',{x1:fx-18,y1:yBase,x2:fx+fw+18,y2:yBase,stroke:'var(--ink-soft)','stroke-width':1.2}));
+
+    // línea de tensión admisible como referencia
+    const yAdm = yBase + r.terreno.sigmaAdm*scale;
+    if(yAdm < VH-16){
+      svg.appendChild(el('line',{x1:fx-18,y1:yAdm,x2:fx+fw+18,y2:yAdm,
+        stroke:'var(--pass)','stroke-width':1.2,'stroke-dasharray':'5,3'}));
+      const tAdm = txt(svg, fx+fw+16, yAdm-4, `σadm ${fmt(r.terreno.sigmaAdm,3)}`, 'dim-text', 'end');
+      tAdm.setAttribute('fill','var(--pass)');
+    }
+
+    // valores en los bordes
+    txt(svg, fx, yBase+hA+15, `${fmt(sA,3)}`, 'press-text');
+    txt(svg, fx+fw, yBase+hB+15, `${fmt(sB,3)}`, 'press-text');
+    txt(svg, fx+fw/2, VH-8, 'presiones en N/mm² — el terreno solo puede empujar hacia arriba');
+
+    // aviso de despegue
+    if(sA<0 || sB<0){
+      const w = txt(svg, fx+fw/2, yBase+maxPx+34, 'Un borde se despega: presión negativa', 'press-text');
+      w.setAttribute('fill','var(--fail)');
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // RENDER
+  // ---------------------------------------------------------------
+  function pill(ok){ return `<span class="badge ${ok?'pass':'fail'}">${ok?'CUMPLE':'NO CUMPLE'}</span>`; }
+  function row(label, value, ok){
+    return `<div class="result-row"><div class="rlabel">${label}</div>
+      <div class="result-line"><div class="rvalue">${value}</div>${pill(ok)}</div></div>`;
+  }
+  function group(title, apdo, rowsHtml){
+    return `<div class="result-group">
+      <div class="result-group-header"><h4>${title}</h4><span class="apdo">${apdo}</span></div>
+      ${rowsHtml}</div>`;
+  }
+  function cell(k, v, u){
+    return `<div class="interm-cell"><div class="k">${k}</div><div class="v">${v}</div><div class="u">${u}</div></div>`;
+  }
+
+  function render(r){
+    const t = r.terreno;
+    $('intermGrid').innerHTML =
+      cell('Peso propio zapata', fmt(r.acc.PPzapata,1), 'kN') +
+      cell('Carga total sobre zapata', fmt(r.acc.Czapata,1), 'kN') +
+      cell('N<sub>C</sub> — axil en la base', fmt(r.acc.NC,1), 'kN') +
+      cell('Excentricidad e<sub>A</sub>', fmt(r.acc.eA*100,1), 'cm') +
+      cell('Excentricidad e<sub>B</sub>', fmt(r.acc.eB*100,1), 'cm') +
+      cell('M<sub>C,x</sub>', fmt(r.acc.MCx,1), 'kN·m') +
+      cell('M<sub>C,y</sub>', fmt(r.acc.MCy,1), 'kN·m') +
+      cell('Empuje horizontal H<sub>d</sub>', fmt(r.desl.Hd,1), 'kN');
+
+    
+    const groups = [];
+    groups.push(group('Tensiones sobre el terreno', 'presión admisible',
+      row('σ<sub>máx</sub> ≤ 1,25 · σ<sub>adm</sub>', `${fmt(t.sigmaMax,3)} ≤ ${fmt(1.25*t.sigmaAdm,3)} N/mm²`, t.cumpleSigmaMax) +
+      row('σ<sub>media</sub> ≤ σ<sub>adm</sub>', `${fmt(t.sigmaMed,3)} ≤ ${fmt(t.sigmaAdm,3)} N/mm²`, t.cumpleSigmaMed) +
+      row('σ<sub>mín</sub> &gt; 0 (sin despegue)', `${fmt(t.sigmaMin,3)} N/mm²`, t.cumpleSigmaMin)
+    ));
+    groups.push(group('Estabilidad', 'vuelco y deslizamiento',
+      row('CS<sub>vuelco</sub> ≥ mínimo', `${fmt(r.vuelco.CSvuelco,2)} ≥ ${fmt(r.vuelco.csVuelcoMin,2)}`, r.vuelco.cumpleVuelco) +
+      row('CS<sub>deslizamiento</sub> ≥ mínimo', `${fmt(r.desl.CSdesl,2)} ≥ ${fmt(r.desl.csDeslMin,2)}`, r.desl.cumpleDesl)
+    ));
+    $('resultsGroups').innerHTML = groups.join('');
+
+    const allOk = t.cumpleSigmaMax && t.cumpleSigmaMed && t.cumpleSigmaMin &&
+                  r.vuelco.cumpleVuelco && r.desl.cumpleDesl;
+    const banner = $('overallBanner');
+
+    if(!r.geometriaValida){
+      banner.className = 'overall-banner fail';
+      banner.innerHTML = `<div class="big">FALTAN DATOS</div>
+        <div class="sub">Introduce las dimensiones de la zapata (A, B y H) para poder verificarla.</div>`;
+      return;
+    }
+    banner.className = 'overall-banner ' + (allOk?'pass':'fail');
+    banner.innerHTML = allOk
+      ? `<div class="big">EL TERRENO ADMITE ESTA ZAPATA</div>
+         <div class="sub">Presiones dentro de lo admisible y estabilidad garantizada. Falta el dimensionamiento del hormigón armado.</div>`
+      : `<div class="big">EL TERRENO NO ADMITE ESTA ZAPATA</div>
+         <div class="sub">Revisa el detalle: normalmente se resuelve aumentando las dimensiones en planta.</div>`;
+  }
+
+  function actualizar(){
+    const r = calcular();
+    drawPlanta(r);
+    drawAlzado('svgAlzadoA','A', r.geom.A_cm, r.geom.H_cm, r.geom.a_cm, 'a');
+    drawAlzado('svgAlzadoB','B', r.geom.B_cm, r.geom.H_cm, r.geom.b_cm, 'b');
+    drawPresiones('svgPresA', r, r.terreno.sigmaAminus, r.terreno.sigmaAplus, r.geom.A_cm, 'A');
+    drawPresiones('svgPresB', r, r.terreno.sigmaBminus, r.terreno.sigmaBplus, r.geom.B_cm, 'B');
+    render(r);
+  }
+
+  document.querySelectorAll('input').forEach(elm=>{
+    elm.addEventListener('input', actualizar);
+    elm.addEventListener('change', actualizar);
+  });
+
+  actualizar();
+})();
+</script>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

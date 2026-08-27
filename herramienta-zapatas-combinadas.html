@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zapatas Combinadas Rígidas - RC Estructuras</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+
+  <style>
+    :root {
+      --paper: var(--bg-secondary);
+      --panel: var(--bg-color);
+      --panel-2: #f1f5f9;
+      --ink: var(--text-primary);
+      --ink-soft: var(--text-secondary);
+      --ink-faint: #94a3b8;
+      --blueprint: var(--accent-blue);
+      --blueprint-deep: var(--accent-blue-hover);
+      --blueprint-light: #e0f2fe;
+      --rebar: var(--accent-yellow);
+      --rebar-light: #fef3c7;
+      --steel-line: var(--border-color);
+      --grid-line: rgba(15,61,92,0.08);
+      --pass: #1F7A4D;
+      --pass-bg: #E3F3EA;
+      --fail: #B3261E;
+      --fail-bg: #FBE8E6;
+      --warn: #8A6410;
+      --warn-bg: #FBF1DC;
+      --radius: 10px;
+      --font-display: 'Roboto', var(--font-display), sans-serif;
+      --font-body: 'Inter', var(--font-sans), sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * { box-sizing: border-box; }
+    
+    .zapata-tool {
+      max-width: 1280px;
+      margin: 0 auto;
+      background: var(--bg-color);
+      border-left: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      box-shadow: 0 0 60px rgba(28,43,54,0.06);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 40px;
+    }
+
+    header.titleblock {
+      background: transparent;
+      color: var(--ink);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      border-bottom: 2px solid var(--blueprint);
+    }
+
+    .titleblock-left { display: flex; align-items: center; gap: 16px; }
+    .drawing-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      border: 1.5px solid var(--accent-blue);
+      border-radius: 4px;
+      padding: 5px 9px;
+      color: var(--accent-blue);
+      white-space: nowrap;
+    }
+    .titleblock-left h1 {
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+    .titleblock-left p {
+      margin: 2px 0 0;
+      font-size: 14px;
+      color: var(--ink-soft);
+      font-family: var(--font-body);
+    }
+    .titleblock-right {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--ink-soft);
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    main.tool-main { max-width: 1280px; margin: 0 auto; padding: 26px 24px 20px; }
+    section { margin-bottom: 30px; }
+
+    
+  :root{
+    --paper:#E7EBEF;
+    --panel:#FFFFFF;
+    --panel-2:#F3F6F8;
+    --ink:#15232F;
+    --ink-soft:#54606B;
+    --ink-faint:#8D98A2;
+    --blueprint:#0F3D5C;
+    --blueprint-deep:#092A40;
+    --blueprint-light:#DCE8EF;
+    --rebar:#AF4530;
+    --rebar-light:#F3E1DA;
+    --steel-line:#C3CDD4;
+    --grid-line:rgba(15,61,92,0.08);
+    --pass:#1F7A4D;
+    --pass-bg:#E3F3EA;
+    --fail:#B3261E;
+    --fail-bg:#FBE8E6;
+    --warn:#8A6410;
+    --warn-bg:#FBF1DC;
+    --radius:10px;
+    --font-display:'Space Grotesk',sans-serif;
+    --font-body:'IBM Plex Sans',sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size:28px 28px;
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:13.5px;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--rebar-light);}
+
+  header.titleblock{
+    background:linear-gradient(135deg,var(--blueprint-deep),var(--blueprint));
+    color:#fff;padding:16px 26px;display:flex;align-items:center;
+    justify-content:space-between;flex-wrap:wrap;gap:14px;
+    border-bottom:4px solid var(--rebar);
+  }
+  .titleblock-left{display:flex;align-items:center;gap:14px;}
+  .drawing-tag{
+    font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.08em;
+    border:1.5px solid rgba(255,255,255,0.55);border-radius:4px;
+    padding:5px 9px;color:#fff;white-space:nowrap;
+  }
+  .titleblock-left h1{font-family:var(--font-display);font-size:20px;font-weight:700;margin:0;letter-spacing:-0.01em;}
+  .titleblock-left p{margin:2px 0 0;font-size:11.5px;color:rgba(255,255,255,0.72);font-family:var(--font-mono);}
+  .titleblock-right{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,0.8);text-align:right;line-height:1.55;}
+
+  main{max-width:1620px;margin:0 auto;padding:18px 20px 60px;}
+  section{margin-bottom:20px;}
+  .section-label{
+    font-family:var(--font-display);font-weight:600;font-size:11px;
+    letter-spacing:0.12em;text-transform:uppercase;color:var(--blueprint);
+    display:flex;align-items:center;gap:10px;margin-bottom:9px;
+  }
+  .section-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--steel-line),transparent);}
+
+  /* ===== Inputs ===== */
+  .inputs-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  @media (max-width:1180px){ .inputs-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:760px){ .inputs-grid{grid-template-columns:1fr;} }
+
+  .panel{
+    background:var(--panel);border-radius:var(--radius);
+    box-shadow:0 1px 2px rgba(15,61,92,0.06), 0 1px 14px rgba(15,61,92,0.05);
+    overflow:hidden;border-top:4px solid var(--steel-line);
+  }
+  .panel.panel-fixed{border-top-color:var(--blueprint);}
+  .panel.panel-geo{border-top-color:#3E7C59;}
+  .panel.panel-variable{border-top-color:var(--rebar);}
+  .panel-header{
+    padding:10px 14px;display:flex;align-items:baseline;gap:9px;
+    background:var(--panel-2);border-bottom:1px solid var(--steel-line);
+  }
+  .panel-fixed .panel-header{background:var(--blueprint-light);}
+  .panel-geo .panel-header{background:#E1EEE6;}
+  .panel-variable .panel-header{background:var(--rebar-light);}
+  .panel-header h2{font-family:var(--font-display);font-size:14px;font-weight:700;margin:0;color:var(--ink);}
+  .panel-header span{font-size:11px;color:var(--ink-soft);font-family:var(--font-mono);}
+
+  .group{padding:10px 14px 2px;}
+  .group + .group{border-top:1px dashed var(--steel-line);}
+  .group h3{
+    font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--ink-faint);margin:0 0 7px;font-weight:600;
+  }
+  .field-row{display:grid;grid-template-columns:1fr 96px;gap:8px;align-items:center;margin-bottom:7px;}
+  .field-row.wide{grid-template-columns:1fr 132px;}
+  .field-row label{font-size:12.2px;}
+  .field-row .hint{display:block;font-size:10.2px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:0;}
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}
+  input[type=text], select{
+    font-family:var(--font-mono);font-size:12.5px;padding:6px 7px;
+    border:1.5px solid var(--steel-line);border-radius:6px;background:#fff;
+    color:var(--ink);width:100%;transition:border-color .15s;
+  }
+  input[type=text]:focus, select:focus{outline:none;border-color:var(--blueprint);}
+  .panel-variable input[type=text]:focus, .panel-variable select:focus{border-color:var(--rebar);}
+  input.invalid{border-color:var(--fail);background:var(--fail-bg);}
+  .unit-suffix{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);text-align:right;}
+
+  .btn{
+    font-family:var(--font-display);font-size:12.5px;font-weight:600;
+    padding:9px 14px;border-radius:7px;border:none;cursor:pointer;
+    background:var(--blueprint);color:#fff;width:100%;letter-spacing:0.02em;
+    transition:background .15s;
+  }
+  .btn:hover{background:var(--blueprint-deep);}
+  .btn.secondary{background:#5C6B76;}
+  .btn.secondary:hover{background:#47545E;}
+  .btn-note{font-family:var(--font-mono);font-size:10.3px;color:var(--ink-faint);margin:6px 0 8px;line-height:1.35;}
+  .btn-note.ok{color:var(--pass);}
+  .btn-note.err{color:var(--fail);}
+
+  /* ===== Drawings ===== */
+  .drawing-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:980px){ .drawing-grid{grid-template-columns:1fr;} }
+  .maps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  @media (max-width:1180px){ .maps-grid{grid-template-columns:1fr;} }
+  .drawing-card{
+    background:var(--panel);border-radius:var(--radius);
+    box-shadow:0 1px 2px rgba(15,61,92,0.06), 0 1px 14px rgba(15,61,92,0.05);overflow:hidden;
+  }
+  .drawing-card h3{
+    font-family:var(--font-display);font-size:12.5px;margin:0;padding:8px 13px;
+    background:var(--blueprint-deep);color:#fff;letter-spacing:0.02em;
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+  }
+  .drawing-card h3 em{font-style:normal;font-family:var(--font-mono);font-size:10.5px;opacity:.72;}
+  .drawing-card .canvas{
+    background:
+      repeating-linear-gradient(0deg, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 18px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 18px),
+      #fff;
+    padding:5px;
+  }
+  .drawing-card .canvas.plain{background:#fff;}
+  svg{display:block;width:100%;height:auto;}
+  .dim-line{stroke:var(--ink-soft);stroke-width:1;}
+  .dim-text{font-family:var(--font-mono);font-size:10.5px;fill:var(--ink-soft);}
+  .concrete{fill:#EEF1F3;stroke:var(--blueprint);stroke-width:1.6;}
+  .column{fill:#F6EDE9;stroke:var(--rebar);stroke-width:1.6;}
+
+  .legend{
+    display:flex;flex-wrap:wrap;gap:5px 16px;align-items:center;
+    padding:8px 13px;font-family:var(--font-mono);font-size:10.3px;color:var(--ink-soft);
+    border-top:1px solid var(--panel-2);
+  }
+  .legend .sw{display:inline-block;width:22px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px;border:1px solid rgba(0,0,0,.12);}
+
+  /* ===== Results ===== */
+  .overall-banner{
+    border-radius:var(--radius);padding:13px 18px;display:flex;align-items:center;
+    justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-family:var(--font-display);margin-bottom:14px;transition:background .2s;
+  }
+  .overall-banner.pass{background:var(--pass);color:#fff;}
+  .overall-banner.fail{background:var(--fail);color:#fff;}
+  .overall-banner .big{font-size:17px;font-weight:700;}
+  .overall-banner .sub{font-family:var(--font-mono);font-size:11.8px;opacity:0.92;}
+
+  .results-groups{display:grid;grid-template-columns:repeat(auto-fit, minmax(330px,1fr));gap:12px;align-items:start;}
+  .result-group{
+    background:var(--panel);border-radius:var(--radius);
+    box-shadow:0 1px 2px rgba(15,61,92,0.06), 0 1px 14px rgba(15,61,92,0.05);overflow:hidden;
+  }
+  .result-group-header{
+    padding:7px 13px;background:var(--panel-2);border-bottom:1px solid var(--steel-line);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .result-group-header h4{margin:0;font-family:var(--font-display);font-size:12.3px;font-weight:600;}
+  .result-group-header .apdo{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);}
+  .result-row{
+    display:flex;justify-content:space-between;align-items:center;gap:8px;
+    padding:5px 13px;border-bottom:1px solid var(--panel-2);
+  }
+  .result-row:last-child{border-bottom:none;}
+  .result-row .rlabel{font-size:12px;line-height:1.3;}
+  .result-row .rlabel small{display:block;font-family:var(--font-mono);font-size:9.8px;color:var(--ink-faint);}
+  .result-row .rvalue{font-family:var(--font-mono);font-size:11.2px;color:var(--ink-soft);text-align:right;white-space:nowrap;}
+  .result-row.info{background:#FBFCFD;}
+  .badge{
+    font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.03em;
+    padding:2px 7px;border-radius:20px;white-space:nowrap;margin-left:7px;
+  }
+  .badge.pass{background:var(--pass-bg);color:var(--pass);}
+  .badge.fail{background:var(--fail-bg);color:var(--fail);}
+  .badge.warn{background:var(--warn-bg);color:var(--warn);}
+  .rline{display:flex;align-items:center;justify-content:flex-end;gap:2px;}
+
+  table.cases{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:10.8px;}
+  table.cases th{
+    text-align:right;padding:5px 10px;background:var(--panel-2);color:var(--ink-faint);
+    font-weight:600;border-bottom:1px solid var(--steel-line);font-size:10px;letter-spacing:.03em;
+  }
+  table.cases th:first-child, table.cases td:first-child{text-align:left;}
+  table.cases td{text-align:right;padding:4px 10px;border-bottom:1px solid var(--panel-2);color:var(--ink-soft);}
+  table.cases tr.gob td{background:var(--rebar-light);color:var(--ink);font-weight:600;}
+
+  footer{max-width:1620px;margin:0 auto;padding:0 20px 36px;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);line-height:1.6;}
+
+  </style>
+</head>
+
+<body>
+  <!-- Global Sticky Navbar -->
+  <header id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">RC<span>ESTRUCTURAS</span></a>
+      <nav>
+        <ul>
+          <li><a href="index.html#about">Conócenos</a></li>
+          <li><a href="index.html#projects">Proyectos</a></li>
+          <li><a href="herramienta-zapatas.html">Herramientas</a></li>
+          <li><a href="index.html#contact">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Tool Hub Selector Bar -->
+  <div class="tool-hub-container container">
+    <div class="tool-hub-nav">
+      <a href="herramienta-zapatas.html" class="tool-tab-btn">Zapatas Aisladas Rígidas</a>
+      <a href="herramienta-zapatas-combinadas.html" class="tool-tab-btn active">Zapatas Combinadas Rígidas</a>
+    </div>
+  </div>
+
+  <div class="zapata-tool container">
+    <header class="titleblock">
+      <div class="titleblock-left">
+        <span class="drawing-tag">ZC · COMBINADAS</span>
+        <div>
+          <h1>Zapatas Combinadas Rígidas</h1>
+          <p>Comprobación de tensiones sobre el terreno, excentricidades y rigidez relativa (Hetényi)</p>
+        </div>
+      </div>
+      <div class="titleblock-right">
+        Método rígido con contacto unilateral<br>
+        Envolvente de 4 casos de signo · Código Estructural
+      </div>
+    </header>
+
+    <main class="tool-main">
+
+
+  <!-- ================= ENTRADA ================= -->
+  <section>
+    <div class="section-label">Datos de entrada</div>
+    <div class="inputs-grid">
+
+      <!-- PANEL 1: DATOS FIJOS -->
+      <div class="panel panel-fixed">
+        <div class="panel-header"><h2>Datos fijos</h2><span>materiales · terreno · coeficientes</span></div>
+
+        <div class="group">
+          <h3>Hormigón</h3>
+          <div class="cols2">
+            <div class="field-row"><label>f<sub>ck</sub><span class="hint">N/mm²</span></label>
+              <div><input type="text" inputmode="decimal" id="fck" value="25"></div></div>
+            <div class="field-row"><label>γ<sub>c</sub><span class="hint">—</span></label>
+              <div><input type="text" inputmode="decimal" id="gammac" value="1,5"></div></div>
+            <div class="field-row"><label>Densidad HA<span class="hint">kN/m³</span></label>
+              <div><input type="text" inputmode="decimal" id="densidadHA" value="25"></div></div>
+            <div class="field-row"><label>γ<sub>f</sub><span class="hint">—</span></label>
+              <div><input type="text" inputmode="decimal" id="gammaf" value="1,5"></div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Terreno</h3>
+          <div class="cols2">
+            <div class="field-row"><label>σ<sub>adm</sub><span class="hint">N/mm²</span></label>
+              <div><input type="text" inputmode="decimal" id="sigmaAdm" value="0,22"></div></div>
+            <div class="field-row"><label>k<sub>s</sub> balasto<span class="hint">kN/m³</span></label>
+              <div><input type="text" inputmode="decimal" id="ks" value="50000"></div></div>
+            <div class="field-row"><label>δ rozamiento<span class="hint">º</span></label>
+              <div><input type="text" inputmode="decimal" id="delta" value="25"></div></div>
+            <div class="field-row"><label>Cohesión<span class="hint">kN/m²</span></label>
+              <div><input type="text" inputmode="decimal" id="cohesion" value="0"></div></div>
+            <div class="field-row"><label>Mayor. σ<sub>máx</sub><span class="hint">× σadm</span></label>
+              <div><input type="text" inputmode="decimal" id="kSigmaMax" value="1,25"></div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Criterios y coeficientes</h3>
+          <div class="cols2">
+            <div class="field-row"><label>Canto mín.<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="hMinConstructivo" value="50"></div></div>
+            <div class="field-row"><label>e accidental<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="eMin" value="2"></div></div>
+            <div class="field-row"><label>Límite β·L<span class="hint">π/2 = 1,5708</span></label>
+              <div><input type="text" inputmode="decimal" id="betaLim" value="1,5708"></div></div>
+            <div class="field-row"><label>CS vuelco<span class="hint">—</span></label>
+              <div><input type="text" inputmode="decimal" id="csVuelcoMin" value="1,8"></div></div>
+            <div class="field-row"><label>CS desliz.<span class="hint">—</span></label>
+              <div><input type="text" inputmode="decimal" id="csDeslMin" value="1,5"></div></div>
+            <div class="field-row"><label>Rigidez vuelos<span class="hint">v ≤ 2h</span></label>
+              <div><select id="exigirV2H">
+                <option value="1" selected>Exigir</option>
+                <option value="0">Informativo</option>
+              </select></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: GEOMETRIA -->
+      <div class="panel panel-geo">
+        <div class="panel-header"><h2>Geometría</h2><span>zapata y pilares</span></div>
+
+        <div class="group">
+          <h3>Zapata · A = eje que une pilares</h3>
+          <div class="cols2">
+            <div class="field-row"><label>A (longitud)<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="Azap" value="550"></div></div>
+            <div class="field-row"><label>B (ancho)<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="Bzap" value="350"></div></div>
+            <div class="field-row"><label>H (canto)<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="Hzap" value="110"></div></div>
+            <div class="field-row"><label>d<sub>C</sub> P1→centro<span class="hint">cm · siempre ≥ 0</span></label>
+              <div><input type="text" inputmode="decimal" id="dC" value="151"></div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Pilares</h3>
+          <div class="cols2">
+            <div class="field-row"><label>D₁₂ entre ejes<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="D12" value="218"></div></div>
+            <div class="field-row"><label>&nbsp;<span class="hint">&nbsp;</span></label><div></div></div>
+            <div class="field-row"><label>a₁ (dir. A)<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="a1" value="25"></div></div>
+            <div class="field-row"><label>b₁ (dir. B)<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="b1" value="25"></div></div>
+            <div class="field-row"><label>a₂ (dir. A)<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="a2" value="25"></div></div>
+            <div class="field-row"><label>b₂ (dir. B)<span class="hint">cm</span></label>
+              <div><input type="text" inputmode="decimal" id="b2" value="25"></div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Cargas sobre la zapata (uniformes)</h3>
+          <div class="cols2">
+            <div class="field-row"><label>Permanentes<span class="hint">kN/m²</span></label>
+              <div><input type="text" inputmode="decimal" id="qPerm" value="0"></div></div>
+            <div class="field-row"><label>Variables<span class="hint">kN/m²</span></label>
+              <div><input type="text" inputmode="decimal" id="qVar" value="0"></div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Predimensionado automático</h3>
+          <button class="btn" id="btnOptima">Calcular zapata óptima</button>
+          <div class="btn-note" id="notaOptima">Centra la resultante de axiles, parte de la superficie mínima N/σ<sub>adm</sub> y crece A y B a la vez en pasos de 5 cm; H barre desde el canto mínimo. Devuelve la de menor volumen que cumple todo. Los campos quedan editables.</div>
+        </div>
+      </div>
+
+      <!-- PANEL 3: ACCIONES -->
+      <div class="panel panel-variable">
+        <div class="panel-header"><h2>Acciones</h2><span>en arranque de pilar · servicio</span></div>
+
+        <div class="group">
+          <h3>Pilar 1</h3>
+          <div class="cols2">
+            <div class="field-row"><label>N₁<span class="hint">kN</span></label>
+              <div><input type="text" inputmode="decimal" id="N1" value="954,5"></div></div>
+            <div class="field-row"><label>&nbsp;<span class="hint">&nbsp;</span></label><div></div></div>
+            <div class="field-row"><label>M<sub>x1</sub><span class="hint">kN·m · flecta en B</span></label>
+              <div><input type="text" inputmode="decimal" id="Mx1" value="6,1"></div></div>
+            <div class="field-row"><label>M<sub>y1</sub><span class="hint">kN·m · flecta en A</span></label>
+              <div><input type="text" inputmode="decimal" id="My1" value="3,3"></div></div>
+            <div class="field-row"><label>V<sub>x1</sub><span class="hint">kN · dir. A</span></label>
+              <div><input type="text" inputmode="decimal" id="Vx1" value="2,2"></div></div>
+            <div class="field-row"><label>V<sub>y1</sub><span class="hint">kN · dir. B</span></label>
+              <div><input type="text" inputmode="decimal" id="Vy1" value="4,3"></div></div>
+          </div>
+          <div class="field-row wide"><label>Signos de M y V<span class="hint">pilar 1</span></label>
+            <div><select id="sig1">
+              <option value="0" selected>Desconocidos → envolvente</option>
+              <option value="1">Conocidos → tal cual</option>
+            </select></div></div>
+        </div>
+
+        <div class="group">
+          <h3>Pilar 2</h3>
+          <div class="cols2">
+            <div class="field-row"><label>N₂<span class="hint">kN</span></label>
+              <div><input type="text" inputmode="decimal" id="N2" value="2163"></div></div>
+            <div class="field-row"><label>&nbsp;<span class="hint">&nbsp;</span></label><div></div></div>
+            <div class="field-row"><label>M<sub>x2</sub><span class="hint">kN·m · flecta en B</span></label>
+              <div><input type="text" inputmode="decimal" id="Mx2" value="10,3"></div></div>
+            <div class="field-row"><label>M<sub>y2</sub><span class="hint">kN·m · flecta en A</span></label>
+              <div><input type="text" inputmode="decimal" id="My2" value="3,3"></div></div>
+            <div class="field-row"><label>V<sub>x2</sub><span class="hint">kN · dir. A</span></label>
+              <div><input type="text" inputmode="decimal" id="Vx2" value="5,1"></div></div>
+            <div class="field-row"><label>V<sub>y2</sub><span class="hint">kN · dir. B</span></label>
+              <div><input type="text" inputmode="decimal" id="Vy2" value="8,0"></div></div>
+          </div>
+          <div class="field-row wide"><label>Signos de M y V<span class="hint">pilar 2</span></label>
+            <div><select id="sig2">
+              <option value="0" selected>Desconocidos → envolvente</option>
+              <option value="1">Conocidos → tal cual</option>
+            </select></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= DIBUJOS ================= -->
+  <section>
+    <div class="section-label">Geometría y diagrama de presiones</div>
+    <div class="drawing-grid">
+      <div class="drawing-card">
+        <h3>Planta <em>A × B</em></h3>
+        <div class="canvas"><svg id="svgPlanta" viewBox="0 0 640 340"></svg></div>
+      </div>
+      <div class="drawing-card">
+        <h3>Alzado longitudinal <em>envolvente de presiones sobre el eje A</em></h3>
+        <div class="canvas"><svg id="svgAlzado" viewBox="0 0 640 340"></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAPAS ================= -->
+  <section>
+    <div class="section-label">Mapas de tensión sobre el terreno</div>
+    <div class="maps-grid">
+      <div class="drawing-card">
+        <h3>σ máxima <em>envolvente · arm. inferior</em></h3>
+        <div class="canvas plain"><svg id="svgMapMax" viewBox="0 0 420 300"></svg></div>
+      </div>
+      <div class="drawing-card">
+        <h3>σ mínima <em>envolvente · arm. superior</em></h3>
+        <div class="canvas plain"><svg id="svgMapMin" viewBox="0 0 420 300"></svg></div>
+      </div>
+      <div class="drawing-card">
+        <h3>σ media local <em>(máx+mín)/2 · geotecnia</em></h3>
+        <div class="canvas plain"><svg id="svgMapMed" viewBox="0 0 420 300"></svg></div>
+      </div>
+    </div>
+    <div class="drawing-card" style="margin-top:12px;">
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <!-- ================= RESULTADOS ================= -->
+  <section>
+    <div class="section-label">Comprobaciones</div>
+    <div id="overallBanner" class="overall-banner"></div>
+    <div id="resultsGroups" class="results-groups"></div>
+  </section>
+
+
+      <!-- ================= MEMORIA TECNICA BASES TEORICAS ================= -->
+      <section style="margin-top: 40px;">
+        <div class="section-label">Bases Teóricas y Alcance del Procedimiento</div>
+        <div class="explain">
+          <div class="explain-intro">
+            <h2>Memoria Descriptiva — Zapatas Combinadas Rígidas</h2>
+            <p>Verificación de tensiones sobre el terreno y clasificación de rigidez según la formulación del Código Estructural y el modelo de viga sobre apoyo elástico de Hetényi (Winkler).</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h3>Objeto y Alcance del Procedimiento</h3>
+              <p>El procedimiento determina las dimensiones en planta (A, B) y canto (H) necesarias para asegurar que las presiones transmitidas por una zapata combinada rígida de dos pilares no superen la presión admisible del terreno, garantizando además el comportamiento como elemento rígido e indeformable.</p>
+              <div class="eq">σ_máx ≤ 1,25 · σ_adm    |    σ_med ≤ σ_adm    |    σ_mín > 0 (sin despegue)</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h3>Clasificación de Rigidez Relativa (Criterio de Hetényi)</h3>
+              <p>Para que sea válida la hipótesis de distribución lineal de presiones, la zapata debe comportarse como un sólido rígido frente a la deformabilidad del suelo. Se evalúa el parámetro de rigidez relativa sobre apoyo elástico continuo:</p>
+              <div class="eq">β = ∜( k_s · B / (4 · E_c · I) )    [m⁻¹]    |    I = B · H³ / 12</div>
+              <p>Se exige que el producto de la longitud elástica característica por la longitud total cumpla la condición de rigidez:</p>
+              <div class="eq">β · L  ≤  π / 2  ≈  1,5708    →    Comportamiento Rígido Válido</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <h3>Envolvente de Cargas y Estabilidad Global</h3>
+              <p>Se analizan 4 casos de signo pésimos para los momentos flectores y cortantes transversales. Se comprueban los coeficientes de seguridad frente al vuelco y al deslizamiento:</p>
+              <div class="eq">CS_vuelco = (A / 2) / |e_x| ≥ 1,8    |    CS_desl = (N_C · tan δ + c · A · B) / √(ΣV_x² + ΣV_y²) ≥ 1,5</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div class="container footer-content">
+      <p>&copy; 2026 RC Estructuras. Todos los derechos reservados.</p>
+      <div class="footer-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="index.html">Inicio</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  
+(function(){
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = id => document.getElementById(id);
+  const getN = id => {
+    const elm = $(id);
+    if(!elm) return 0;
+    const raw = (elm.value||'').trim().replace(/\s/g,'').replace(',', '.');
+    const v = parseFloat(raw);
+    const ok = raw !== '' && isFinite(v);
+    if (elm.classList) elm.classList.toggle('invalid', !ok);
+    return ok ? v : 0;
+  };
+  function fmt(v, dec){
+    if (v===Infinity) return "\u221e";
+    if (!isFinite(v)) return "\u2014";
+    dec = dec===undefined?2:dec;
+    return v.toLocaleString('es-ES',{minimumFractionDigits:dec, maximumFractionDigits:dec});
+  }
+
+  // =================================================================
+  // NUCLEO GEOMETRICO — contacto unilateral zapata/terreno
+  //   p(x,y) = a + b*x + c*y   (x,y desde el centro geometrico)
+  //   truncado a {p >= 0}: el terreno no tracciona.
+  //   Equilibrio: INT p dA = N ; INT p*x dA = N*ex ; INT p*y dA = N*ey
+  // =================================================================
+  function recortar(P, a, b, c){
+    const out = [];
+    const f = p => a + b*p[0] + c*p[1];
+    for (let i=0; i<P.length; i++){
+      const cur = P[i], nxt = P[(i+1)%P.length];
+      const fc = f(cur), fn = f(nxt);
+      if (fc >= 0) out.push(cur);
+      if ((fc > 0 && fn < 0) || (fc < 0 && fn > 0)){
+        const t = fc/(fc-fn);
+        out.push([cur[0]+t*(nxt[0]-cur[0]), cur[1]+t*(nxt[1]-cur[1])]);
+      }
+    }
+    return out;
+  }
+  function momentos(P){
+    let I0=0, Ix=0, Iy=0, Ixx=0, Ixy=0, Iyy=0;
+    for (let i=1; i<P.length-1; i++){
+      const x1=P[0][0], y1=P[0][1];
+      const x2=P[i][0], y2=P[i][1];
+      const x3=P[i+1][0], y3=P[i+1][1];
+      const Ar = ((x2-x1)*(y3-y1) - (x3-x1)*(y2-y1))/2;
+      const sx = x1+x2+x3, sy = y1+y2+y3;
+      I0  += Ar;
+      Ix  += Ar*sx/3;
+      Iy  += Ar*sy/3;
+      Ixx += Ar/12*(sx*sx + x1*x1 + x2*x2 + x3*x3);
+      Iyy += Ar/12*(sy*sy + y1*y1 + y2*y2 + y3*y3);
+      Ixy += Ar/12*(sx*sy + x1*y1 + x2*y2 + x3*y3);
+    }
+    return {I0,Ix,Iy,Ixx,Ixy,Iyy};
+  }
+  function resolver3(J, r){
+    const M = [[J[0][0],J[0][1],J[0][2],r[0]],
+               [J[1][0],J[1][1],J[1][2],r[1]],
+               [J[2][0],J[2][1],J[2][2],r[2]]];
+    for (let k=0; k<3; k++){
+      let piv=k;
+      for (let i=k+1;i<3;i++) if (Math.abs(M[i][k])>Math.abs(M[piv][k])) piv=i;
+      if (Math.abs(M[piv][k]) < 1e-18) return null;
+      const tmp=M[k]; M[k]=M[piv]; M[piv]=tmp;
+      for (let i=k+1;i<3;i++){
+        const f = M[i][k]/M[k][k];
+        for (let j=k;j<4;j++) M[i][j] -= f*M[k][j];
+      }
+    }
+    const s=[0,0,0];
+    for (let i=2;i>=0;i--){
+      let acc=M[i][3];
+      for (let j=i+1;j<3;j++) acc -= M[i][j]*s[j];
+      s[i]=acc/M[i][i];
+    }
+    return s;
+  }
+  function planoPresiones(N, ex, ey, A, B){
+    const res = {ok:false, sinEquilibrio:false, a:0, b:0, c:0,
+                 despegue:false, areaComp:0, frac:0, sigmaMax:0, sigmaMinLineal:0, poly:null};
+    if (!(N > 0) || !(A > 0) || !(B > 0)) return res;
+    const rect = [[-A/2,-B/2],[A/2,-B/2],[A/2,B/2],[-A/2,B/2]];
+    const aL = N/(A*B);
+    const bL = 12*N*ex/(B*A*A*A);
+    const cL = 12*N*ey/(A*B*B*B);
+    const valsL = rect.map(p => aL + bL*p[0] + cL*p[1]);
+    res.sigmaMinLineal = Math.min.apply(null, valsL);
+    if (res.sigmaMinLineal >= -1e-12){
+      res.ok = true; res.a=aL; res.b=bL; res.c=cL;
+      res.despegue = false; res.areaComp = A*B; res.frac = 1;
+      res.sigmaMax = Math.max.apply(null, valsL);
+      res.poly = rect;
+      return res;
+    }
+    if (Math.abs(ex) >= A/2 - 1e-12 || Math.abs(ey) >= B/2 - 1e-12){
+      res.sinEquilibrio = true; return res;
+    }
+    const semillas = [[aL,bL,cL]];
+    if (Math.abs(ex) > A/6){
+      const lc = 3*(A/2 - Math.abs(ex));
+      const sg = ex >= 0 ? 1 : -1;
+      const smax = 2*N/(B*lc);
+      const xn = sg*(A/2 - lc);
+      semillas.push([-sg*smax*xn/lc, sg*smax/lc, 0]);
+    }
+    if (Math.abs(ey) > B/6){
+      const lc = 3*(B/2 - Math.abs(ey));
+      const sg = ey >= 0 ? 1 : -1;
+      const smax = 2*N/(A*lc);
+      const yn = sg*(B/2 - lc);
+      semillas.push([-sg*smax*yn/lc, 0, sg*smax/lc]);
+    }
+    const esc = [N, N*A, N*B];
+    const residuo = (a,b,c) => {
+      const P = recortar(rect, a, b, c);
+      if (P.length < 3) return null;
+      const m = momentos(P);
+      const R0 = a*m.I0  + b*m.Ix  + c*m.Iy  - N;
+      const R1 = a*m.Ix  + b*m.Ixx + c*m.Ixy - N*ex;
+      const R2 = a*m.Iy  + b*m.Ixy + c*m.Iyy - N*ey;
+      const nr = Math.max(Math.abs(R0/esc[0]), Math.abs(R1/esc[1]), Math.abs(R2/esc[2]));
+      return {m, r:[R0,R1,R2], nr, P};
+    };
+    for (const s of semillas){
+      let a=s[0], b=s[1], c=s[2], conv=false;
+      for (let it=0; it<120; it++){
+        const ev = residuo(a,b,c);
+        if (!ev) break;
+        if (ev.nr < 1e-11){ conv = true; break; }
+        const m = ev.m;
+        const J = [[m.I0,m.Ix,m.Iy],[m.Ix,m.Ixx,m.Ixy],[m.Iy,m.Ixy,m.Iyy]];
+        const d = resolver3(J, [-ev.r[0], -ev.r[1], -ev.r[2]]);
+        if (!d) break;
+        let lam = 1, avanza = false;
+        for (let k=0; k<30; k++){
+          const ev2 = residuo(a+lam*d[0], b+lam*d[1], c+lam*d[2]);
+          if (ev2 && ev2.nr < ev.nr){
+            a += lam*d[0]; b += lam*d[1]; c += lam*d[2];
+            avanza = true; break;
+          }
+          lam *= 0.5;
+        }
+        if (!avanza) break;
+      }
+      if (conv){
+        const P = recortar(rect, a, b, c);
+        const m = momentos(P);
+        res.ok = true; res.a=a; res.b=b; res.c=c; res.poly = P;
+        res.areaComp = m.I0;
+        res.frac = m.I0/(A*B);
+        res.despegue = res.frac < 1 - 1e-9;
+        res.sigmaMax = Math.max.apply(null, rect.map(p => Math.max(a + b*p[0] + c*p[1], 0)));
+        return res;
+      }
+    }
+    return res;
+  }
+  const pAt = (pl,x,y) => { if(!pl||!pl.ok) return NaN; const v = pl.a + pl.b*x + pl.c*y; return v>0?v:0; };
+
+  // =================================================================
+  // MODELO DE LA ZAPATA COMBINADA
+  // =================================================================
+  function leerDatos(){
+    return {
+      fck:getN('fck'), gammac:getN('gammac'), densidadHA:getN('densidadHA'), gammaf:getN('gammaf'),
+      sigmaAdm:getN('sigmaAdm')*1000, ks:getN('ks'), delta:getN('delta'), cohesion:getN('cohesion'),
+      kSigmaMax:getN('kSigmaMax'),
+      hMinConstructivo:getN('hMinConstructivo')/100, eMin:getN('eMin')/100, betaLim:getN('betaLim'),
+      csVuelcoMin:getN('csVuelcoMin'), csDeslMin:getN('csDeslMin'),
+      exigirV2H:$('exigirV2H').value==='1',
+      A:getN('Azap')/100, B:getN('Bzap')/100, H:getN('Hzap')/100, dC:getN('dC')/100, D12:getN('D12')/100,
+      a1:getN('a1')/100, b1:getN('b1')/100, a2:getN('a2')/100, b2:getN('b2')/100,
+      qPerm:getN('qPerm'), qVar:getN('qVar'),
+      N1:getN('N1'), Mx1:getN('Mx1'), My1:getN('My1'), Vx1:getN('Vx1'), Vy1:getN('Vy1'), sig1:$('sig1').value==='1',
+      N2:getN('N2'), Mx2:getN('Mx2'), My2:getN('My2'), Vx2:getN('Vx2'), Vy2:getN('Vy2'), sig2:$('sig2').value==='1'
+    };
+  }
+
+  // Evaluacion completa para una geometria (A,B,H,dC) dada
+  function evaluar(d, A, B, H, dC){
+    const R = {};
+    // --- posiciones (origen en el centro geometrico de la zapata) ---
+    const x1 = -dC, x2 = d.D12 - dC;
+    R.x1=x1; R.x2=x2; R.A=A; R.B=B; R.H=H; R.dC=dC;
+
+    // --- geometria ---
+    const v1izq = A/2 - dC - d.a1/2;              // vuelo exterior pilar 1
+    const v2der = A/2 - (d.D12 - dC) - d.a2/2;    // vuelo exterior pilar 2
+    const vB1 = B/2 - d.b1/2, vB2 = B/2 - d.b2/2; // vuelos transversales
+    const luzLibre = d.D12 - d.a1/2 - d.a2/2;     // separacion entre caras
+    R.v1izq=v1izq; R.v2der=v2der; R.vB1=vB1; R.vB2=vB2; R.luzLibre=luzLibre;
+    R.pilaresDentro = v1izq >= -1e-9 && v2der >= -1e-9 && vB1 >= -1e-9 && vB2 >= -1e-9;
+    R.pilaresNoSolapan = luzLibre >= -1e-9;
+    R.geomOK = R.pilaresDentro && R.pilaresNoSolapan && A>0 && B>0 && H>0;
+
+    // rigidez geometrica de vuelos (CodE: zapata rigida si v <= 2h)
+    const vMax = Math.max(v1izq, v2der, vB1, vB2);
+    R.vMax = vMax;
+    R.v2h = vMax <= 2*H + 1e-9;
+    R.cantoMinOK = H >= d.hMinConstructivo - 1e-9;
+
+    // --- acciones ---
+    const PP = A*B*H*d.densidadHA;
+    const Qsup = (d.qPerm + d.qVar)*A*B;
+    const NC = d.N1 + d.N2 + PP + Qsup;
+    R.PP=PP; R.Qsup=Qsup; R.NC=NC;
+
+    // paquetes de momento por pilar, referidos a la BASE de la zapata
+    //   direccion A (flexion en X) <- My + Vx*H
+    //   direccion B (flexion en Y) <- Mx + Vy*H
+    const pA1 = d.My1 + d.Vx1*H, pA2 = d.My2 + d.Vx2*H;
+    const pB1 = d.Mx1 + d.Vy1*H, pB2 = d.Mx2 + d.Vy2*H;
+
+    // parte fija (signos conocidos) y parte incierta (se acumula en valor absoluto)
+    let MAfijo = d.N1*x1 + d.N2*x2;   // momento geometrico de los axiles
+    let MAinc  = 0, MBfijo = 0, MBinc = 0;
+    if (d.sig1){ MAfijo += pA1; MBfijo += pB1; } else { MAinc += Math.abs(pA1); MBinc += Math.abs(pB1); }
+    if (d.sig2){ MAfijo += pA2; MBfijo += pB2; } else { MAinc += Math.abs(pA2); MBinc += Math.abs(pB2); }
+    const eAcc = NC*d.eMin;   // excentricidad accidental, siempre desfavorable
+    R.MAfijo=MAfijo; R.MAinc=MAinc; R.MBfijo=MBfijo; R.MBinc=MBinc; R.eAcc=eAcc;
+
+    // 4 casos extremos: (MA max/min) x (MB max/min)
+    const MAext = [MAfijo + MAinc + eAcc, MAfijo - MAinc - eAcc];
+    const MBext = [MBfijo + MBinc + eAcc, MBfijo - MBinc - eAcc];
+    const casos = [];
+    const nom = [['A+','A−'],['B+','B−']];
+    for (let i=0;i<2;i++) for (let j=0;j<2;j++){
+      const MA = MAext[i], MB = MBext[j];
+      const ex = NC>1e-9 ? MA/NC : 0;
+      const ey = NC>1e-9 ? MB/NC : 0;
+      const pl = planoPresiones(NC, ex, ey, A, B);
+      casos.push({id:nom[0][i]+' / '+nom[1][j], MA, MB, ex, ey, pl});
+    }
+    R.casos = casos;
+    R.sinEquilibrio = casos.some(c => c.pl.sinEquilibrio);
+    R.noConverge = casos.some(c => !c.pl.ok && !c.pl.sinEquilibrio);
+    R.calculoOK = casos.every(c => c.pl.ok);
+
+    // --- envolventes escalares ---
+    let sMax = -Infinity, fracMin = 1, exAbs = 0, eyAbs = 0, gob = null;
+    for (const c of casos){
+      if (!c.pl.ok) continue;
+      if (c.pl.sigmaMax > sMax){ sMax = c.pl.sigmaMax; gob = c; }
+      fracMin = Math.min(fracMin, c.pl.frac);
+      exAbs = Math.max(exAbs, Math.abs(c.ex));
+      eyAbs = Math.max(eyAbs, Math.abs(c.ey));
+    }
+    R.sigmaMaxEnv = isFinite(sMax) ? sMax : NaN;
+    R.casoGobierna = gob;
+    R.fracMin = fracMin;
+    R.despegue = fracMin < 1 - 1e-9;
+    R.exAbs = exAbs; R.eyAbs = eyAbs;
+    R.sigmaMed = A>0&&B>0 ? NC/(A*B) : NaN;
+
+    // sigma minima envolvente = minimo sobre las 4 esquinas fisicas y los 4 casos
+    const esquinas = [[-A/2,-B/2],[A/2,-B/2],[A/2,B/2],[-A/2,B/2]];
+    let sMin = Infinity;
+    for (const c of casos){ if(!c.pl.ok) continue;
+      for (const q of esquinas) sMin = Math.min(sMin, pAt(c.pl,q[0],q[1])); }
+    R.sigmaMinEnv = isFinite(sMin) ? sMin : NaN;
+
+    // --- comprobaciones tensionales ---
+    R.okSigmaMed  = R.sigmaMed <= d.sigmaAdm + 1e-9;
+    R.okSigmaMax  = R.calculoOK && R.sigmaMaxEnv <= d.kSigmaMax*d.sigmaAdm + 1e-9;
+    R.okSigmaMin  = R.calculoOK && !R.despegue;
+    R.rSigmaMed = d.sigmaAdm / R.sigmaMed;
+    R.rSigmaMax = (d.kSigmaMax*d.sigmaAdm) / R.sigmaMaxEnv;
+
+    // --- rigidez Winkler / Calavera ---
+    const Ec = 8500*Math.cbrt(d.fck+8)*1000;      // kN/m2
+    const I  = B*Math.pow(H,3)/12;                 // m4
+    const beta = Math.pow(d.ks*B/(4*Ec*I), 0.25);  // 1/m
+    R.Ec=Ec; R.I=I; R.beta=beta; R.betaL = beta*A;
+    R.Lelastica = beta>0 ? 1/beta : Infinity;
+    R.okRigidez = R.betaL <= d.betaLim + 1e-9;
+    R.rRigidez = d.betaLim / R.betaL;
+
+    // --- deslizamiento y vuelco ---
+    const VxT = d.sig1 && d.sig2 ? Math.abs(d.Vx1 + d.Vx2) : Math.abs(d.Vx1)+Math.abs(d.Vx2);
+    const VyT = d.sig1 && d.sig2 ? Math.abs(d.Vy1 + d.Vy2) : Math.abs(d.Vy1)+Math.abs(d.Vy2);
+    const Hres = Math.hypot(VxT, VyT);
+    const Rdes = NC*Math.tan(d.delta*Math.PI/180) + d.cohesion*A*B;
+    R.Hres=Hres; R.Rdes=Rdes;
+    R.csDesl = Hres>1e-9 ? Rdes/Hres : Infinity;
+    R.okDesl = R.csDesl >= d.csDeslMin - 1e-9;
+    R.csVuelcoA = exAbs>1e-12 ? (A/2)/exAbs : Infinity;
+    R.csVuelcoB = eyAbs>1e-12 ? (B/2)/eyAbs : Infinity;
+    R.okVuelco = R.csVuelcoA >= d.csVuelcoMin-1e-9 && R.csVuelcoB >= d.csVuelcoMin-1e-9;
+
+    // --- veredicto para el optimizador ---
+    R.cumpleTodo = R.geomOK && R.cantoMinOK && R.calculoOK &&
+                   R.okSigmaMed && R.okSigmaMax && R.okSigmaMin &&
+                   R.okRigidez && (d.exigirV2H ? R.v2h : true);
+    R.cumpleGlobal = R.cumpleTodo && R.okDesl && R.okVuelco;
+    return R;
+  }
+
+  // =================================================================
+  // OPTIMIZADOR — barrido en pasos de 5 cm, minimo volumen
+  // =================================================================
+  function dCoptimo(d){
+    const Nt = d.N1 + d.N2;
+    if (!(Nt > 0)) return d.D12/2;
+    return d.N2*d.D12/Nt;
+  }
+  function optimizar(d){
+    const paso = 0.05;
+    const dC = Math.round(dCoptimo(d)/0.01)*0.01;      // redondeo a 1 cm
+    const A0raw = 2*Math.max(dC + d.a1/2, d.D12 - dC + d.a2/2);
+    const B0raw = Math.max(d.b1, d.b2);
+    const A0 = Math.ceil(A0raw/paso)*paso;
+    const B0 = Math.ceil(B0raw/paso)*paso;
+    const Hmax = 2.50, tMax = 12.00;
+
+    let best = null;
+    for (let H = Math.ceil(d.hMinConstructivo/paso)*paso; H <= Hmax + 1e-9; H += paso){
+      // predimensionado: superficie necesaria con el peso propio de este canto
+      let t0 = 0;
+      const Nest = d.N1 + d.N2;
+      for (let k=0;k<12;k++){
+        const Aa = A0 + t0, Bb = B0 + t0;
+        const NCest = Nest + Aa*Bb*H*d.densidadHA + (d.qPerm+d.qVar)*Aa*Bb;
+        const Sreq = NCest/d.sigmaAdm;
+        if (Aa*Bb >= Sreq) break;
+        // crecer t hasta alcanzar la superficie (resolucion de (A0+t)(B0+t)=Sreq)
+        const disc = Math.pow((A0+B0)/2,2) - (A0*B0 - Sreq);
+        if (!(disc > 0)) break;
+        const tn = -(A0+B0)/2 + Math.sqrt(disc);
+        if (!(tn > t0 + 1e-9)) break;
+        t0 = tn;
+      }
+      t0 = Math.max(0, Math.floor(t0/paso)*paso - 2*paso);
+
+      for (let t = t0; t <= tMax + 1e-9; t += paso){
+        const A = A0 + t, B = B0 + t;
+        const r = evaluar(d, A, B, H, dC);
+        if (r.cumpleTodo){
+          const V = A*B*H;
+          if (!best || V < best.V - 1e-9) best = {A,B,H,dC,V,r};
+          break;  // para este canto ya tenemos la planta minima
+        }
+      }
+    }
+    return best;
+  }
+
+  // =================================================================
+  // COLOR
+  // =================================================================
+  function lerpHex(c1,c2,t){
+    const p = h => [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+    const A=p(c1), B=p(c2);
+    const q = v => Math.round(v).toString(16).padStart(2,'0');
+    return '#'+q(A[0]+(B[0]-A[0])*t)+q(A[1]+(B[1]-A[1])*t)+q(A[2]+(B[2]-A[2])*t);
+  }
+  function colorSigma(s, sadm, kmax){
+    if (!isFinite(s)) return '#FFFFFF';
+    if (s <= 1e-9) return '#D3DAE0';                       // despegue
+    const r = s/sadm;
+    if (r <= 1)    return lerpHex('#E8F1F6','#1F5E85', Math.pow(r,0.85));
+    if (r <= kmax) return lerpHex('#E3A93F','#C2761C', (r-1)/(kmax-1));
+    return '#B3261E';
+  }
+
+  // =================================================================
+  // DIBUJO
+  // =================================================================
+  function el(tag, attrs){
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function clearSvg(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+  function txt(svg, x, y, s, anchor, cls, fill){
+    const t = el('text',{x,y,'text-anchor':anchor||'middle',class:cls||'dim-text'});
+    if (fill) t.setAttribute('fill', fill);
+    t.textContent = s; svg.appendChild(t); return t;
+  }
+  function dimLine(svg, x1,y1,x2,y2, text){
+    svg.appendChild(el('line',{x1,y1,x2,y2,class:'dim-line'}));
+    svg.appendChild(el('line',{x1:x1,y1:y1-4,x2:x1,y2:y1+4,class:'dim-line'}));
+    svg.appendChild(el('line',{x1:x2,y1:y2-4,x2:x2,y2:y2+4,class:'dim-line'}));
+    txt(svg,(x1+x2)/2, y1-5, text);
+  }
+  function extLine(svg,x1,y1,x2,y2){
+    svg.appendChild(el('line',{x1,y1,x2,y2,class:'dim-line','stroke-dasharray':'2,2','stroke-width':0.6}));
+  }
+  function aviso(svg, VW, s){
+    txt(svg, VW/2, 15, s, 'middle', null, 'var(--fail)').setAttribute('font-weight','700');
+  }
+
+  function drawPlanta(d, r){
+    const svg = $('svgPlanta'); clearSvg(svg);
+    const VW=640, VH=340, padL=54, padR=30, padT=34, padB=54;
+    const aw = VW-padL-padR, ah = VH-padT-padB;
+    if (!(r.A>0 && r.B>0)) return;
+    const sc = Math.min(aw/r.A, ah/r.B);
+    const fw = r.A*sc, fh = r.B*sc;
+    const fx = padL + (aw-fw)/2, fy = padT + (ah-fh)/2;
+    const X = x => fx + fw/2 + x*sc;
+    const Y = y => fy + fh/2 - y*sc;
+
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,class:'concrete',rx:2}));
+    extLine(svg, X(0), fy-8, X(0), fy+fh+8);
+    extLine(svg, fx-8, Y(0), fx+fw+8, Y(0));
+
+    const cols = [{x:r.x1,a:d.a1,b:d.b1,n:'P1'},{x:r.x2,a:d.a2,b:d.b2,n:'P2'}];
+    for (const c of cols){
+      const at = {x:X(c.x)-c.a*sc/2, y:Y(0)-c.b*sc/2, width:c.a*sc, height:c.b*sc, class:'column', rx:1};
+      if (!r.pilaresDentro){ at.stroke='var(--fail)'; at['stroke-width']=2; }
+      svg.appendChild(el('rect',at));
+      txt(svg, X(c.x), Y(0)+3.5, c.n, 'middle', null, 'var(--rebar)').setAttribute('font-weight','700');
+    }
+    if (!r.geomOK){
+      svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,fill:'none',stroke:'var(--fail)','stroke-width':2.4,rx:2}));
+      aviso(svg, VW, r.pilaresNoSolapan ? 'LOS PILARES SE SALEN DE LA ZAPATA' : 'LOS PILARES SE SOLAPAN');
+    }
+
+    extLine(svg, fx, fy+fh, fx, fy+fh+26);
+    extLine(svg, fx+fw, fy+fh, fx+fw, fy+fh+26);
+    dimLine(svg, fx, fy+fh+22, fx+fw, fy+fh+22, `A = ${fmt(r.A*100,0)} cm`);
+    extLine(svg, fx, fy, fx-26, fy);
+    extLine(svg, fx, fy+fh, fx-26, fy+fh);
+    svg.appendChild(el('line',{x1:fx-20,y1:fy,x2:fx-20,y2:fy+fh,class:'dim-line'}));
+    const tb = el('text',{class:'dim-text','text-anchor':'middle',x:fx-24,y:fy+fh/2,
+      transform:`rotate(-90 ${fx-24} ${fy+fh/2})`});
+    tb.textContent = `B = ${fmt(r.B*100,0)} cm`; svg.appendChild(tb);
+
+    // cota dC y D12
+    const yc = fy + fh + 8;
+    svg.appendChild(el('line',{x1:X(r.x1),y1:yc,x2:X(0),y2:yc,stroke:'var(--rebar)','stroke-width':1.4}));
+    txt(svg,(X(r.x1)+X(0))/2, yc-4, `d_C = ${fmt(r.dC*100,1)}`, 'middle', null, 'var(--rebar)');
+    const yd = fy - 10;
+    svg.appendChild(el('line',{x1:X(r.x1),y1:yd,x2:X(r.x2),y2:yd,stroke:'var(--blueprint)','stroke-width':1.4}));
+    txt(svg,(X(r.x1)+X(r.x2))/2, yd-4, `D₁₂ = ${fmt(d.D12*100,0)}`, 'middle', null, 'var(--blueprint)');
+
+    // vuelos
+    txt(svg, (fx + X(r.x1)-d.a1*sc/2)/2, Y(0)-6, `${fmt(r.v1izq*100,0)}`, 'middle');
+    txt(svg, (fx+fw + X(r.x2)+d.a2*sc/2)/2, Y(0)-6, `${fmt(r.v2der*100,0)}`, 'middle');
+
+    // resultante de axiles
+    const xR = (d.N1+d.N2)>0 ? (d.N1*r.x1 + d.N2*r.x2)/(d.N1+d.N2) : 0;
+    svg.appendChild(el('line',{x1:X(xR),y1:fy-4,x2:X(xR),y2:fy+fh+4,
+      stroke:'#3E7C59','stroke-width':1.6,'stroke-dasharray':'5,3'}));
+    txt(svg, X(xR), fy+fh+40, `R axiles (e = ${fmt((xR)*100,1)} cm)`, 'middle', null, '#3E7C59');
+  }
+
+  function drawAlzado(d, r){
+    const svg = $('svgAlzado'); clearSvg(svg);
+    const VW=640, VH=340, padL=52, padR=30, padT=42, padB=30;
+    const aw = VW-padL-padR;
+    if (!(r.A>0 && r.H>0)) return;
+    const sc = aw/r.A;
+    const fw = r.A*sc, fh = Math.min(r.H*sc, 60);
+    const fx = padL, fy = padT + 74;
+    const X = x => fx + fw/2 + x*sc;
+
+    // pilares
+    const cols = [{x:r.x1,a:d.a1,n:'P1',N:d.N1},{x:r.x2,a:d.a2,n:'P2',N:d.N2}];
+    for (const c of cols){
+      svg.appendChild(el('rect',{x:X(c.x)-c.a*sc/2, y:fy-52, width:c.a*sc, height:52, class:'column', rx:1}));
+      txt(svg, X(c.x), fy-58, `${c.n} · ${fmt(c.N,0)} kN`, 'middle', null, 'var(--rebar)');
+    }
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,class:'concrete',rx:2}));
+    txt(svg, fx-8, fy+fh/2+3, `H=${fmt(r.H*100,0)}`, 'end');
+
+    if (!r.calculoOK){ aviso(svg, VW, r.sinEquilibrio ? 'SIN EQUILIBRIO: RESULTANTE FUERA DE LA BASE' : 'NO CONVERGE'); return; }
+
+    // envolvente de presiones a lo largo de A (max y min sobre y y sobre casos)
+    const n = 140, ys = [-r.B/2, 0, r.B/2];
+    const up = [], lo = [];
+    let pmax = 0;
+    for (let i=0;i<=n;i++){
+      const x = -r.A/2 + r.A*i/n;
+      let mx = -Infinity, mn = Infinity;
+      for (const c of r.casos){ if(!c.pl.ok) continue;
+        for (const y of ys){ const v = pAt(c.pl,x,y); if(v>mx)mx=v; if(v<mn)mn=v; } }
+      up.push([x,mx]); lo.push([x,mn]); pmax = Math.max(pmax, mx);
+    }
+    const hmax = 92;
+    const scP = pmax>0 ? hmax/pmax : 0;
+    const yb = fy + fh + 4;
+    const pts = arr => arr.map(p => `${X(p[0])},${yb + p[1]*scP}`).join(' ');
+    svg.appendChild(el('polygon',{points:`${X(-r.A/2)},${yb} ${pts(up)} ${X(r.A/2)},${yb}`,
+      fill:'rgba(31,94,133,0.16)', stroke:'var(--blueprint)','stroke-width':1.5}));
+    svg.appendChild(el('polyline',{points:pts(lo), fill:'none', stroke:'var(--rebar)','stroke-width':1.5,'stroke-dasharray':'4,3'}));
+    svg.appendChild(el('line',{x1:X(-r.A/2),y1:yb,x2:X(r.A/2),y2:yb,class:'dim-line'}));
+
+    // limite sigma adm y k*sigma adm
+    for (const [lim,col,lab] of [[d.sigmaAdm,'#3E7C59','σadm'],[d.kSigmaMax*d.sigmaAdm,'var(--fail)',`${fmt(d.kSigmaMax,2)}·σadm`]]){
+      const yy = yb + lim*scP;
+      if (yy < VH-4){
+        svg.appendChild(el('line',{x1:X(-r.A/2),y1:yy,x2:X(r.A/2),y2:yy,stroke:col,'stroke-width':1,'stroke-dasharray':'6,4'}));
+        txt(svg, X(r.A/2)+2, yy+3, lab, 'start', null, col);
+      }
+    }
+    txt(svg, X(-r.A/2), yb-4, `máx ${fmt(pmax,0)} kPa`, 'start', null, 'var(--blueprint)');
+    txt(svg, VW/2, padT-16, 'Envolvente de presiones (superior azul · inferior roja)', 'middle', null, 'var(--ink-faint)');
+  }
+
+  function drawMapa(svgId, d, r, tipo){
+    const svg = $(svgId); clearSvg(svg);
+    const VW=420, VH=300, padL=30, padR=30, padT=26, padB=34;
+    const aw = VW-padL-padR, ah = VH-padT-padB;
+    if (!(r.A>0 && r.B>0)) return;
+    const sc = Math.min(aw/r.A, ah/r.B);
+    const fw = r.A*sc, fh = r.B*sc;
+    const fx = padL + (aw-fw)/2, fy = padT + (ah-fh)/2;
+    if (!r.calculoOK){ aviso(svg, VW, 'SIN SOLUCIÓN DE EQUILIBRIO'); return; }
+
+    const nx = 72, ny = Math.max(8, Math.round(72*r.B/r.A));
+    const cw = fw/nx, ch = fh/ny;
+    let vmin = Infinity, vmax = -Infinity;
+    const g = el('g',{});
+    for (let i=0;i<nx;i++){
+      for (let j=0;j<ny;j++){
+        const x = -r.A/2 + r.A*(i+0.5)/nx;
+        const y = -r.B/2 + r.B*(j+0.5)/ny;
+        let mx=-Infinity, mn=Infinity;
+        for (const c of r.casos){ if(!c.pl.ok) continue;
+          const v = pAt(c.pl,x,y); if(v>mx)mx=v; if(v<mn)mn=v; }
+        const v = tipo==='max' ? mx : tipo==='min' ? mn : (mx+mn)/2;
+        vmin = Math.min(vmin,v); vmax = Math.max(vmax,v);
+        g.appendChild(el('rect',{x:fx+i*cw, y:fy+fh-(j+1)*ch, width:cw+0.6, height:ch+0.6,
+          fill:colorSigma(v, d.sigmaAdm, d.kSigmaMax), 'shape-rendering':'crispEdges'}));
+      }
+    }
+    svg.appendChild(g);
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,fill:'none',stroke:'var(--blueprint)','stroke-width':1.4}));
+
+    const cols = [{x:r.x1,a:d.a1,b:d.b1},{x:r.x2,a:d.a2,b:d.b2}];
+    for (const c of cols){
+      svg.appendChild(el('rect',{x:fx+fw/2+(c.x-c.a/2)*sc, y:fy+fh/2-(c.b/2)*sc,
+        width:c.a*sc, height:c.b*sc, fill:'none', stroke:'var(--rebar)','stroke-width':1.6}));
+    }
+    txt(svg, VW/2, VH-10, `mín ${fmt(vmin,0)} · máx ${fmt(vmax,0)} kPa`, 'middle', null, 'var(--ink-soft)');
+  }
+
+  function renderLeyenda(d){
+    const L = $('legend');
+    const kmax = d.kSigmaMax, sadm = d.sigmaAdm;
+    const stops = [
+      ['#D3DAE0','σ = 0 · despegue'],
+      [colorSigma(0.25*sadm,sadm,kmax), `0,25·σadm`],
+      [colorSigma(0.60*sadm,sadm,kmax), `0,60·σadm`],
+      [colorSigma(1.00*sadm,sadm,kmax), `σadm = ${fmt(sadm,0)} kPa`],
+      [colorSigma(1.10*sadm,sadm,kmax), `> σadm`],
+      ['#B3261E', `> ${fmt(kmax,2)}·σadm`]
+    ];
+    L.innerHTML = stops.map(s=>`<span><span class="sw" style="background:${s[0]}"></span>${s[1]}</span>`).join('')
+      + `<span style="margin-left:auto">Escala común a los tres mapas · valores en kPa</span>`;
+  }
+
+  // =================================================================
+  // RESULTADOS
+  // =================================================================
+  function pill(ok, txtOk, txtNo){ return `<span class="badge ${ok?'pass':'fail'}">${ok?(txtOk||'CUMPLE'):(txtNo||'NO CUMPLE')}</span>`; }
+  function row(label, sub, value, ok, ratio){
+    const r = (ratio!==undefined && isFinite(ratio)) ? `<div class="rvalue">c = ${fmt(ratio,3)}</div>` : '';
+    return `<div class="result-row">
+      <div class="rlabel">${label}${sub?`<small>${sub}</small>`:''}</div>
+      <div><div class="rline"><span class="rvalue">${value}</span>${ok===null?'':pill(ok)}</div>${r}</div></div>`;
+  }
+  function info(label, value){
+    return `<div class="result-row info"><div class="rlabel">${label}</div><div class="rvalue">${value}</div></div>`;
+  }
+  function group(title, apdo, inner){
+    return `<div class="result-group">
+      <div class="result-group-header"><h4>${title}</h4><span class="apdo">${apdo}</span></div>${inner}</div>`;
+  }
+
+  function render(d, r){
+    renderLeyenda(d);
+
+    // --- banner ---
+    const bn = $('overallBanner');
+    const fallos = [];
+    if (!r.pilaresDentro) fallos.push('pilares fuera de la zapata');
+    if (!r.pilaresNoSolapan) fallos.push('pilares solapados');
+    if (!r.cantoMinOK) fallos.push('canto mínimo');
+    if (r.sinEquilibrio) fallos.push('sin equilibrio');
+    if (r.calculoOK){
+      if (!r.okSigmaMed) fallos.push('σ media');
+      if (!r.okSigmaMax) fallos.push('σ máxima');
+      if (!r.okSigmaMin) fallos.push('despegue');
+      if (!r.okRigidez) fallos.push('rigidez β·L');
+      if (d.exigirV2H && !r.v2h) fallos.push('v ≤ 2h');
+      if (!r.okDesl) fallos.push('deslizamiento');
+      if (!r.okVuelco) fallos.push('vuelco');
+    }
+    const ok = fallos.length===0;
+    bn.className = 'overall-banner ' + (ok?'pass':'fail');
+    bn.innerHTML = `<div><div class="big">${ok?'LA ZAPATA CUMPLE':'LA ZAPATA NO CUMPLE'}</div>
+      <div class="sub">${ok?'Todas las comprobaciones de esta fase son satisfactorias':'Fallan: '+fallos.join(' · ')}</div></div>
+      <div class="sub">A×B×H = ${fmt(r.A*100,0)}×${fmt(r.B*100,0)}×${fmt(r.H*100,0)} cm · V = ${fmt(r.A*r.B*r.H,2)} m³</div>`;
+
+    // --- grupos ---
+    let out = '';
+
+    out += group('Geometría del sistema','consistencia',
+      row('Pilares dentro de la zapata', `vuelos ext. ${fmt(r.v1izq*100,1)} / ${fmt(r.v2der*100,1)} cm`,
+          `${fmt(Math.min(r.v1izq,r.v2der)*100,1)} cm`, r.pilaresDentro) +
+      row('Vuelos transversales', `B/2 − b/2`, `${fmt(r.vB1*100,1)} / ${fmt(r.vB2*100,1)} cm`, r.vB1>=-1e-9&&r.vB2>=-1e-9) +
+      row('Separación libre entre pilares', 'D₁₂ − a₁/2 − a₂/2', `${fmt(r.luzLibre*100,1)} cm`, r.pilaresNoSolapan) +
+      row('Canto mínimo constructivo', `H ≥ ${fmt(d.hMinConstructivo*100,0)} cm`, `${fmt(r.H*100,0)} cm`, r.cantoMinOK) +
+      info('d<sub>C</sub> óptimo (centra la resultante)', `${fmt(dCoptimo(d)*100,1)} cm · actual ${fmt(r.dC*100,1)} cm`) +
+      info('Excentricidad geométrica residual', `${fmt(((d.N1*r.x1+d.N2*r.x2)/(d.N1+d.N2||1))*100,1)} cm`)
+    );
+
+    const sadm = d.sigmaAdm;
+    out += group('Tensiones sobre el terreno','envolvente 4 casos',
+      row('σ media ≤ σ<sub>adm</sub>', `N<sub>tot</sub>/(A·B) · límite ${fmt(sadm,0)} kPa`,
+          `${fmt(r.sigmaMed,1)} kPa`, r.okSigmaMed, r.rSigmaMed) +
+      row(`σ máxima ≤ ${fmt(d.kSigmaMax,2)}·σ<sub>adm</sub>`, `límite ${fmt(d.kSigmaMax*sadm,0)} kPa · caso ${r.casoGobierna?r.casoGobierna.id:'—'}`,
+          `${fmt(r.sigmaMaxEnv,1)} kPa`, r.okSigmaMax, r.rSigmaMax) +
+      row('σ mínima ≥ 0 · no despegue', `contacto ${fmt(r.fracMin*100,1)} % de la base`,
+          `${fmt(r.sigmaMinEnv,1)} kPa`, r.okSigmaMin) +
+      info('N total en la base', `${fmt(r.NC,1)} kN`) +
+      info('Peso propio + cargas sobre zapata', `${fmt(r.PP,1)} + ${fmt(r.Qsup,1)} kN`) +
+      info('Excentricidades máximas |e<sub>A</sub>| / |e<sub>B</sub>|', `${fmt(r.exAbs*100,1)} / ${fmt(r.eyAbs*100,1)} cm`) +
+      info('Núcleo central A/6 · B/6', `${fmt(r.A*100/6,1)} / ${fmt(r.B*100/6,1)} cm`)
+    );
+
+    out += group('Rigidez','Winkler · Calavera',
+      row('β·L ≤ límite', `límite ${fmt(d.betaLim,4)} (π/2 = 1,5708)`, `${fmt(r.betaL,4)}`, r.okRigidez, r.rRigidez) +
+      row('Rigidez de vuelos v ≤ 2h', `v<sub>máx</sub> = ${fmt(r.vMax*100,1)} cm · 2h = ${fmt(2*r.H*100,0)} cm`,
+          `${fmt(r.vMax/(2*r.H),3)}`, d.exigirV2H ? r.v2h : null) +
+      info('β · longitud elástica 1/β', `${fmt(r.beta,4)} m⁻¹ · ${fmt(r.Lelastica,3)} m`) +
+      info('E<sub>c</sub> · I', `${fmt(r.Ec/1000,0)} MPa · ${fmt(r.I,4)} m⁴`) +
+      info('Módulo de balasto k<sub>s</sub>', `${fmt(d.ks,0)} kN/m³`)
+    );
+
+    out += group('Estabilidad global','vuelco · deslizamiento',
+      row('Deslizamiento', `H<sub>res</sub> = ${fmt(r.Hres,1)} kN · R = ${fmt(r.Rdes,1)} kN · mín ${fmt(d.csDeslMin,2)}`,
+          `${fmt(r.csDesl,2)}`, r.okDesl) +
+      row('Vuelco dirección A', `mín ${fmt(d.csVuelcoMin,2)}`, `${fmt(r.csVuelcoA,2)}`, r.csVuelcoA>=d.csVuelcoMin-1e-9) +
+      row('Vuelco dirección B', `mín ${fmt(d.csVuelcoMin,2)}`, `${fmt(r.csVuelcoB,2)}`, r.csVuelcoB>=d.csVuelcoMin-1e-9)
+    );
+
+    // tabla de casos
+    let tb = `<table class="cases"><thead><tr>
+      <th>Caso</th><th>M<sub>A</sub></th><th>M<sub>B</sub></th><th>e<sub>A</sub></th><th>e<sub>B</sub></th>
+      <th>σ<sub>máx</sub></th><th>contacto</th></tr></thead><tbody>`;
+    for (const c of r.casos){
+      const gob = r.casoGobierna === c;
+      tb += `<tr class="${gob?'gob':''}"><td>${c.id}</td>
+        <td>${fmt(c.MA,0)}</td><td>${fmt(c.MB,0)}</td>
+        <td>${fmt(c.ex*100,1)}</td><td>${fmt(c.ey*100,1)}</td>
+        <td>${c.pl.ok?fmt(c.pl.sigmaMax,1):'—'}</td>
+        <td>${c.pl.ok?fmt(c.pl.frac*100,1)+' %':'sin eq.'}</td></tr>`;
+    }
+    tb += `</tbody></table>`;
+    out += group('Detalle de los 4 casos extremos','kN·m · cm · kPa', tb);
+
+    $('resultsGroups').innerHTML = out;
+  }
+
+  // =================================================================
+  // ACTUALIZACION
+  // =================================================================
+  function actualizar(){
+    const d = leerDatos();
+    const r = evaluar(d, d.A, d.B, d.H, d.dC);
+    drawPlanta(d, r);
+    drawAlzado(d, r);
+    drawMapa('svgMapMax', d, r, 'max');
+    drawMapa('svgMapMin', d, r, 'min');
+    drawMapa('svgMapMed', d, r, 'med');
+    render(d, r);
+  }
+
+  $('btnOptima').addEventListener('click', () => {
+    const nota = $('notaOptima');
+    nota.className = 'btn-note';
+    nota.textContent = 'Calculando…';
+    setTimeout(() => {
+      const d = leerDatos();
+      const t0 = performance.now();
+      const best = optimizar(d);
+      const ms = performance.now()-t0;
+      if (!best){
+        nota.className = 'btn-note err';
+        nota.innerHTML = 'No se ha encontrado ninguna zapata que cumpla dentro de los límites de búsqueda (H ≤ 250 cm, crecimiento ≤ 12 m). Revisa σ<sub>adm</sub>, k<sub>s</sub>, D₁₂ o el criterio de rigidez.';
+        return;
+      }
+      $('Azap').value = fmt(best.A*100,0);
+      $('Bzap').value = fmt(best.B*100,0);
+      $('Hzap').value = fmt(best.H*100,0);
+      $('dC').value   = fmt(best.dC*100,0);
+      actualizar();
+      nota.className = 'btn-note ok';
+      nota.innerHTML = `Solución de menor volumen: <b>${fmt(best.A*100,0)} × ${fmt(best.B*100,0)} × ${fmt(best.H*100,0)} cm</b>
+        (V = ${fmt(best.V,2)} m³), d<sub>C</sub> = ${fmt(best.dC*100,0)} cm. Barrido en ${fmt(ms,0)} ms.
+        Es un punto de partida: ajústalo a la geometría real del edificio.`;
+    }, 20);
+  });
+
+  document.querySelectorAll('input, select').forEach(e => {
+    e.addEventListener('input', actualizar);
+    e.addEventListener('change', actualizar);
+  });
+  actualizar();
+})();
+
+  </script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

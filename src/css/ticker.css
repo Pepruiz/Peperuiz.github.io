@@ -1,0 +1,94 @@
+/* Tech Stack Ribbon - Seamless Infinite Ticker (Ultrawide Ready) */
+.tech-stack-ribbon {
+  background-color: rgba(249, 250, 251, 0.95);
+  backdrop-filter: blur(5px);
+  padding: 1.2rem 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+  position: relative;
+}
+
+.tech-stack-ribbon::before,
+.tech-stack-ribbon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 90px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tech-stack-ribbon::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(249, 250, 251, 1), transparent);
+}
+
+.tech-stack-ribbon::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(249, 250, 251, 1), transparent);
+}
+
+.ticker-wrapper {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll-ultrawide 35s linear infinite;
+}
+
+.ticker-wrapper:hover {
+  animation-play-state: paused;
+}
+
+.ticker-track {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding-right: 2rem;
+  flex-shrink: 0;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s ease;
+}
+
+.ticker-item:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-1px);
+}
+
+.software-logo {
+  height: 24px;
+  width: auto;
+  max-width: 36px;
+  object-fit: contain;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.ticker-dot {
+  color: var(--accent-blue);
+  font-size: 0.9rem;
+  opacity: 0.35;
+}
+
+@keyframes marquee-scroll-ultrawide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-16.6666667%);
+  }
+}
