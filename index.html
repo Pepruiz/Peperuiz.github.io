@@ -336,31 +336,96 @@
 
     <!-- Contact Section -->
     <section id="contact" class="reveal">
-
       <div class="container contact-container">
-        <h2>Contacto</h2>
-        <form class="contact-form" action="https://formsubmit.co/rlpepe00@gmail.com" method="POST">
-          <!-- FormSubmit Configuration -->
-          <input type="hidden" name="_subject" value="Nuevo Mensaje desde RC Estructuras">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input type="text" name="_honey" style="display:none">
+        <div class="contact-card">
+          <!-- Panel Izquierdo: Información y Asistencia Técnica -->
+          <div class="contact-info-panel">
+            <div>
+              <div class="pill-badge">
+                <span class="badge-indicator"></span>
+                Asistencia Técnica Directa
+              </div>
+              <h2>Inicia tu Consulta Estructural</h2>
+              <p class="contact-lead">
+                Colaboramos con estudios de arquitectura, ingenierías, promotoras y constructoras para resolver el cálculo, dimensionamiento o diagnóstico de cualquier reto estructural.
+              </p>
 
-          <div class="form-group">
-            <label for="email">Tu Email</label>
-            <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+              <div class="contact-features-list">
+                <div class="contact-feature-item">
+                  <div class="contact-feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                  </div>
+                  <div class="contact-feature-text">
+                    <h4>Cálculo y Optimización</h4>
+                    <p>Hormigón armado, estructuras metálicas, madera y cimentaciones.</p>
+                  </div>
+                </div>
+
+                <div class="contact-feature-item">
+                  <div class="contact-feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  </div>
+                  <div class="contact-feature-text">
+                    <h4>Respuesta Rápida</h4>
+                    <p>Revisión técnica inicial de anteproyectos en menos de 24-48 horas.</p>
+                  </div>
+                </div>
+
+                <div class="contact-feature-item">
+                  <div class="contact-feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                  </div>
+                  <div class="contact-feature-text">
+                    <h4>Ámbito Nacional</h4>
+                    <p>Servicios de consultoría y asistencia técnica en toda España.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-direct-email">
+              ¿Prefieres escribirnos directamente? <br>
+              <a href="mailto:rlpepe00@gmail.com">rlpepe00@gmail.com</a>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="subject">Asunto</label>
-            <input type="text" id="subject" name="subject" placeholder="Interés en colaboración / Proyecto" required>
+
+          <!-- Panel Derecho: Formulario de Contacto -->
+          <div class="contact-form-panel">
+            <h3>Envíanos un Mensaje</h3>
+            <p class="form-subtitle">Cuéntanos los detalles de tu proyecto o consulta técnica.</p>
+
+            <form class="contact-form" action="https://formsubmit.co/rlpepe00@gmail.com" method="POST">
+              <!-- FormSubmit Configuration -->
+              <input type="hidden" name="_subject" value="Nuevo Mensaje desde RC Estructuras">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="text" name="_honey" style="display:none">
+
+              <div class="form-group">
+                <label for="email">Tu Email de Contacto</label>
+                <input type="email" id="email" name="email" placeholder="tu@empresa-o-estudio.com" required>
+              </div>
+              <div class="form-group">
+                <label for="subject">Asunto / Tipología de Proyecto</label>
+                <input type="text" id="subject" name="subject" placeholder="Ej: Cálculo de estructura residencial / Nave / Refuerzo" required>
+              </div>
+              <div class="form-group">
+                <label for="message">Mensaje o Consulta</label>
+                <textarea id="message" name="message" rows="4" placeholder="Describe brevemente el alcance, localización o necesidades de tu proyecto..." required></textarea>
+              </div>
+              <button type="submit" id="submitBtn" class="btn btn-primary full-width">Enviar Solicitud Técnica &rarr;</button>
+              <div id="formStatus" class="form-status" style="display: none; margin-top: 1.2rem; padding: 0.9rem 1.2rem; border-radius: 6px; font-size: 0.95rem; text-align: center; line-height: 1.5;"></div>
+            </form>
           </div>
-          <div class="form-group">
-            <label for="message">Mensaje</label>
-            <textarea id="message" name="message" rows="5" placeholder="Hola, me gustaría discutir un proyecto..." required></textarea>
-          </div>
-          <button type="submit" id="submitBtn" class="btn btn-primary full-width">Enviar Mensaje</button>
-          <div id="formStatus" class="form-status" style="display: none; margin-top: 1.2rem; padding: 0.9rem 1.2rem; border-radius: 6px; font-size: 0.95rem; text-align: center; line-height: 1.5;"></div>
-        </form>
+        </div>
       </div>
     </section>
   </main>

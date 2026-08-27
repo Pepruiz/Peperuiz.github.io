@@ -563,17 +563,41 @@
     const cx = fx + (fw-cw)/2;
     const stubH = 55;
 
+    // 1. Relleno de hormigón
     svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,class:'concrete'}));
-    const hatchN = Math.max(4, Math.floor(fw/14));
-    for(let i=-3;i<hatchN+3;i++){
-      const xx = fx + i*14;
-      svg.appendChild(el('line',{x1:Math.max(xx,fx),y1:fy+fh,x2:Math.min(xx+fh,fx+fw),y2:fy,class:'hatch-line'}));
+
+    // 2. Rayado a 45° estrictamente paralelo y delimitado por clipPath
+    const clipId = 'clip_' + svgId;
+    let defs = svg.querySelector('defs');
+    if (!defs) {
+      defs = el('defs', {});
+      svg.appendChild(defs);
     }
-    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,fill:'none',stroke:'var(--blueprint)','stroke-width':1.6}));
+    const clip = el('clipPath', { id: clipId });
+    clip.appendChild(el('rect', { x: fx, y: fy, width: fw, height: fh }));
+    defs.appendChild(clip);
 
+    const gHatch = el('g', { 'clip-path': `url(#${clipId})` });
+    const spacing = 12;
+    for(let x = fx - fh - 10; x <= fx + fw + 10; x += spacing) {
+      gHatch.appendChild(el('line', {
+        x1: x,
+        y1: fy + fh + 4,
+        x2: x + fh + 8,
+        y2: fy - 4,
+        class: 'hatch-line'
+      }));
+    }
+    svg.appendChild(gHatch);
+
+    // Contorno exterior zapata
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,fill:'none',stroke:'var(--accent-blue)','stroke-width':1.6}));
+
+    // Pilar / Soporte
     svg.appendChild(el('rect',{x:cx,y:fy-stubH,width:cw,height:stubH+2,class:'column'}));
-    svg.appendChild(el('line',{x1:cx-4,y1:fy-stubH,x2:cx+cw+4,y2:fy-stubH,stroke:'var(--rebar)','stroke-width':1.2,'stroke-dasharray':'3,2'}));
+    svg.appendChild(el('line',{x1:cx-4,y1:fy-stubH,x2:cx+cw+4,y2:fy-stubH,stroke:'var(--accent-yellow)','stroke-width':1.2,'stroke-dasharray':'3,2'}));
 
+    // Cotas
     extLine(svg, fx, fy+fh, fx, fy+fh+22);
     extLine(svg, fx+fw, fy+fh, fx+fw, fy+fh+22);
     dimLine(svg, fx, fy+fh+18, fx+fw, fy+fh+18, `${widthLabel} = ${fmt(width_cm,0)} cm`, true);
@@ -596,11 +620,11 @@
 
     // zapata (canto esquemático)
     svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,class:'concrete'}));
-    txt(svg, fx+fw/2, fy-10, `Zapata — dirección ${label}`);
+    txt(svg, fx+fw/2, fy-10, `Zapata — dirección ${label}`, 'dim-text', 'middle');
 
     const sA = sMinusEdge, sB = sPlusEdge;
     const maxAbs = Math.max(Math.abs(sA), Math.abs(sB), r.terreno.sigmaAdm, 1e-6);
-    const maxPx = 96;
+    const maxPx = 90;
     const scale = maxPx/maxAbs;
 
     const yBase = fy+fh+6;
@@ -611,27 +635,32 @@
     const pts = `${fx},${yBase} ${fx+fw},${yBase} ${fx+fw},${yBase+hB} ${fx},${yBase+hA}`;
     svg.appendChild(el('polygon',{points:pts, class:'press-fill'}));
 
-    // línea del terreno
-    svg.appendChild(el('line',{x1:fx-18,y1:yBase,x2:fx+fw+18,y2:yBase,stroke:'var(--ink-soft)','stroke-width':1.2}));
+    // línea del terreno (contacto)
+    svg.appendChild(el('line',{x1:fx-20,y1:yBase,x2:fx+fw+20,y2:yBase,stroke:'#64748b','stroke-width':1.2}));
 
-    // línea de tensión admisible como referencia
+    // línea de tensión admisible como referencia (verde discontinua con etiqueta no superpuesta)
     const yAdm = yBase + r.terreno.sigmaAdm*scale;
-    if(yAdm < VH-16){
-      svg.appendChild(el('line',{x1:fx-18,y1:yAdm,x2:fx+fw+18,y2:yAdm,
-        stroke:'var(--pass)','stroke-width':1.2,'stroke-dasharray':'5,3'}));
-      const tAdm = txt(svg, fx+fw+16, yAdm-4, `σadm ${fmt(r.terreno.sigmaAdm,3)}`, 'dim-text', 'end');
-      tAdm.setAttribute('fill','var(--pass)');
+    if(yAdm < VH-18){
+      svg.appendChild(el('line',{x1:fx-24,y1:yAdm,x2:fx+fw+24,y2:yAdm,
+        stroke:'#059669','stroke-width':1.2,'stroke-dasharray':'5,3'}));
+      // Etiqueta σadm situada a la izquierda o derecha en el extremo de la línea sin colisionar
+      const tAdm = txt(svg, fx-6, yAdm-5, `σadm = ${fmt(r.terreno.sigmaAdm,3)}`, 'dim-text', 'start');
+      tAdm.setAttribute('fill','#059669');
+      tAdm.setAttribute('font-weight','600');
     }
 
-    // valores en los bordes
-    txt(svg, fx, yBase+hA+15, `${fmt(sA,3)}`, 'press-text');
-    txt(svg, fx+fw, yBase+hB+15, `${fmt(sB,3)}`, 'press-text');
-    txt(svg, fx+fw/2, VH-8, 'presiones en N/mm² — el terreno solo puede empujar hacia arriba');
+    // valores en los bordes (centrados exactamente bajo los vértices de la zapata)
+    const tA = txt(svg, fx, yBase+hA+16, `σ = ${fmt(sA,3)}`, 'press-text', 'middle');
+    const tB = txt(svg, fx+fw, yBase+hB+16, `σ = ${fmt(sB,3)}`, 'press-text', 'middle');
+    if(sA < 0) { tA.setAttribute('fill', '#ef4444'); }
+    if(sB < 0) { tB.setAttribute('fill', '#ef4444'); }
+
+    txt(svg, fx+fw/2, VH-6, 'presiones en N/mm² — el terreno solo puede empujar hacia arriba', 'dim-text', 'middle');
 
     // aviso de despegue
     if(sA<0 || sB<0){
-      const w = txt(svg, fx+fw/2, yBase+maxPx+34, 'Un borde se despega: presión negativa', 'press-text');
-      w.setAttribute('fill','var(--fail)');
+      const w = txt(svg, fx+fw/2, yBase+maxPx+36, '⚠ Un borde se despega (tracción nula en el terreno)', 'press-text', 'middle');
+      w.setAttribute('fill','#dc2626');
     }
   }
 
