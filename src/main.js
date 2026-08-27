@@ -37,5 +37,57 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 revealElements.forEach(el => revealObserver.observe(el));
 
-console.log('Portfolio initialized with reveal effects.');
+// Contact Form AJAX Submission (Keeps user on the page and shows smooth feedback)
+const contactForm = document.querySelector('.contact-form');
+const formStatus = document.getElementById('formStatus');
+
+if (contactForm && formStatus) {
+  contactForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+
+    // Loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Enviando mensaje...';
+    formStatus.style.display = 'none';
+
+    const formData = new FormData(contactForm);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/rlpepe00@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        formStatus.style.display = 'block';
+        formStatus.style.backgroundColor = '#ecfdf5';
+        formStatus.style.color = '#065f46';
+        formStatus.style.border = '1px solid #a7f3d0';
+        formStatus.innerHTML = '✓ <strong>¡Mensaje enviado con éxito!</strong> Nos pondremos en contacto contigo a la mayor brevedad.';
+        contactForm.reset();
+      } else {
+        throw new Error('Respuesta no válida');
+      }
+    } catch (error) {
+      formStatus.style.display = 'block';
+      formStatus.style.backgroundColor = '#fef2f2';
+      formStatus.style.color = '#991b1b';
+      formStatus.style.border = '1px solid #fecaca';
+      formStatus.innerHTML = '✕ <strong>Hubo un problema al enviar el mensaje.</strong> Por favor, inténtalo de nuevo o escríbenos directamente a <a href="mailto:rlpepe00@gmail.com" style="text-decoration:underline;">rlpepe00@gmail.com</a>.';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+    }
+  });
+}
+
+console.log('Portfolio initialized with reveal effects and contact handler.');
 
