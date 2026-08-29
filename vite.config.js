@@ -11,6 +11,7 @@ export default defineConfig({
         // Core Pages
         main: 'index.html',
         conocenos: 'conocenos.html',
+        privacidad: 'privacidad.html',
 
         // Scalable Engineering Calculation Tools Hub
         herramienta_zapatas: 'herramienta-zapatas.html',
