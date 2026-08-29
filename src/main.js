@@ -57,7 +57,7 @@ if (contactForm && formStatus) {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/rlpepe00@gmail.com', {
+      const response = await fetch('https://formsubmit.co/ajax/ingenieria@rcestructuras.es', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ if (contactForm && formStatus) {
       formStatus.style.backgroundColor = '#fef2f2';
       formStatus.style.color = '#991b1b';
       formStatus.style.border = '1px solid #fecaca';
-      formStatus.innerHTML = '✕ <strong>Hubo un problema al enviar el mensaje.</strong> Por favor, inténtalo de nuevo o escríbenos directamente a <a href="mailto:rlpepe00@gmail.com" style="text-decoration:underline;">rlpepe00@gmail.com</a>.';
+      formStatus.innerHTML = '✕ <strong>Hubo un problema al enviar el mensaje.</strong> Por favor, inténtalo de nuevo o escríbenos directamente a <a href="mailto:ingenieria@rcestructuras.es" style="text-decoration:underline;">ingenieria@rcestructuras.es</a>.';
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnText;
