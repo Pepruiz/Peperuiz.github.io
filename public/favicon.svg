@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#0f172a"/>
+  <!-- Structural Top Beam -->
+  <path d="M12 16H52" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/>
+  <!-- RC Monogram in bold structural typography -->
+  <text x="13" y="43" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, sans-serif" font-size="27" font-weight="900" fill="#ffffff">R</text>
+  <text x="32" y="43" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, sans-serif" font-size="27" font-weight="900" fill="#38bdf8">C</text>
+  <!-- Structural Bottom Foundation Line -->
+  <line x1="12" y1="51" x2="52" y2="51" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Structural Connection Nodes -->
+  <circle cx="12" cy="16" r="3" fill="#38bdf8"/>
+  <circle cx="52" cy="16" r="3" fill="#38bdf8"/>
+  <circle cx="12" cy="51" r="2.5" fill="#ffffff"/>
+  <circle cx="52" cy="51" r="2.5" fill="#ffffff"/>
+</svg>
