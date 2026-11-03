@@ -23,7 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-# Documentation context (local only)
-diseño.md
-diseno.md
+# Local tools / runner
 powershell.cmd

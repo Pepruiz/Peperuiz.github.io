@@ -18,12 +18,6 @@
   --accent-slate-light: #F1F5F9;
   --accent-slate-rgb: 71, 85, 105;
 
-  /* Acentos de interfaz (reemplazando dorado por azul oscuro y pizarra sobria) */
-  --accent-copper: #1E2D3D;
-  --accent-copper-hover: #111C26;
-  --accent-copper-light: #334155;
-  --accent-copper-rgb: 30, 45, 61;
-  --accent-yellow: #475569;
 
   --border-color: #E2E8F0;
   --border-hover: #94A3B8;

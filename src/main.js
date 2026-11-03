@@ -160,5 +160,3 @@ if (contactForm && formStatus) {
   });
 }
 
-console.log('Portfolio initialized with reveal effects, mobile menu and contact handler.');
-
