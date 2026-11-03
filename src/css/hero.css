@@ -18,7 +18,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  background-color: rgba(2, 132, 199, 0.08);
+  background-color: rgba(30, 45, 61, 0.05);
   color: var(--accent-blue);
   font-family: var(--font-sans);
   font-weight: 600;
@@ -27,7 +27,7 @@
   letter-spacing: 0.08em;
   padding: 0.45rem 1rem;
   border-radius: 50px;
-  border: 1px solid rgba(2, 132, 199, 0.2);
+  border: 1px solid rgba(30, 45, 61, 0.14);
   margin-bottom: 1.8rem;
 }
 
@@ -36,19 +36,19 @@
   height: 8px;
   background-color: var(--accent-blue);
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.5);
+  box-shadow: 0 0 0 0 rgba(30, 45, 61, 0.4);
   animation: pulse-dot 2s infinite;
 }
 
 @keyframes pulse-dot {
   0% {
-    box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.5);
+    box-shadow: 0 0 0 0 rgba(30, 45, 61, 0.4);
   }
   70% {
-    box-shadow: 0 0 0 8px rgba(2, 132, 199, 0);
+    box-shadow: 0 0 0 8px rgba(30, 45, 61, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
+    box-shadow: 0 0 0 0 rgba(30, 45, 61, 0);
   }
 }
 
@@ -66,7 +66,7 @@
 }
 
 .hero-title-accent {
-  color: var(--accent-blue);
+  color: var(--accent-slate);
   position: relative;
   display: inline-block;
 }
@@ -153,8 +153,8 @@
 
 .pillar-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(2, 132, 199, 0.3);
-  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.08);
+  border-color: rgba(30, 45, 61, 0.25);
+  box-shadow: 0 10px 24px rgba(30, 45, 61, 0.08);
 }
 
 .pillar-card:hover::before {
@@ -169,7 +169,8 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--accent-blue);
-  background: rgba(2, 132, 199, 0.08);
+  background: rgba(30, 45, 61, 0.06);
+  border: 1px solid rgba(30, 45, 61, 0.1);
   padding: 0.22rem 0.6rem;
   border-radius: 4px;
   margin-bottom: 0.55rem;

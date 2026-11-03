@@ -3,8 +3,13 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="canonical" href="https://rcestructuras.es/project-viviendas-alcala.html" />
+  <link rel="alternate" hreflang="es" href="https://rcestructuras.es/project-viviendas-alcala.html" />
+  <link rel="alternate" hreflang="en" href="https://rcestructuras.es/en/project-viviendas-alcala.html" />
+  <link rel="alternate" hreflang="x-default" href="https://rcestructuras.es/project-viviendas-alcala.html" />
   <title>102 Viviendas Alcalá - RC Estructuras</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,15 +22,27 @@
 <body>
   <header id="navbar">
     <div class="container nav-container">
-      <a href="index.html" class="logo">RC<span>ESTRUCTURAS</span></a>
-      <nav>
+      <a href="index.html" class="logo" aria-label="RC Estructuras">
+        <img src="/assets/logos/rc_horizontal_color.svg" alt="RC Estructuras" class="brand-logo">
+      </a>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menú de navegación" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      <nav class="nav-menu" id="navMenu">
         <ul>
           <li><a href="index.html#about">Quiénes Somos</a></li>
           <li><a href="index.html#services">Servicios</a></li>
-          <li><a href="index.html#projects">Proyectos</a></li>
+          <li><a href="index.html#projects" class="active">Proyectos</a></li>
           <li><a href="herramienta-zapatas.html">Herramientas</a></li>
           <li><a href="index.html#contact">Contacto</a></li>
         </ul>
+        <div class="lang-switch">
+          <span class="lang-active">ES</span>
+          <span class="lang-sep">|</span>
+          <a href="/en/project-viviendas-alcala.html" class="lang-link">EN</a>
+        </div>
       </nav>
     </div>
   </header>
@@ -39,7 +56,7 @@
         <p class="subtitle">Cálculo estructural y optimización de forjados para desarrollo residencial plurifamiliar</p>
         
         <div class="project-hero-media">
-          <img src="/Fotos/viviendas-alcala/viviendas-alcala-01.jpg" alt="Render de las 102 Viviendas en Alcalá de Henares"
+          <img src="/assets/proyectos/viviendas-alcala/viviendas-alcala-01.jpg" alt="Render de las 102 Viviendas en Alcalá de Henares"
             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'padding: 4rem; text-align: center; color: var(--text-secondary);\'>[Fotografía Principal - 102 Viviendas en Alcalá]</div>';">
         </div>
       </div>
@@ -90,7 +107,7 @@
     <div class="container footer-content">
       <p>&copy; 2026 RC Estructuras. Todos los derechos reservados.</p>
       <div class="footer-links">
-        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="https://www.linkedin.com/company/rc-estructuras/?viewAsMember=true" target="_blank" rel="noopener">LinkedIn</a>
         <a href="index.html">Inicio</a>
       </div>
     </div>

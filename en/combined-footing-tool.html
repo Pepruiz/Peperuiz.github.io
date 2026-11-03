@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://rcestructuras.es/en/combined-footing-tool.html" />
+  <link rel="alternate" hreflang="es" href="https://rcestructuras.es/herramienta-zapatas-combinadas.html" />
+  <link rel="alternate" hreflang="en" href="https://rcestructuras.es/en/combined-footing-tool.html" />
+  <link rel="alternate" hreflang="x-default" href="https://rcestructuras.es/herramienta-zapatas-combinadas.html" />
+  <title>Rigid Combined Footings Design Tool - RC Estructuras</title>
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+
+  <style>
+    :root {
+      --paper: var(--bg-secondary);
+      --panel: var(--bg-color);
+      --panel-2: #f1f5f9;
+      --ink: var(--text-primary);
+      --ink-soft: var(--text-secondary);
+      --ink-faint: #94a3b8;
+      --blueprint: var(--accent-blue);
+      --blueprint-deep: var(--accent-blue-hover);
+      --blueprint-light: #e0f2fe;
+      --rebar: var(--accent-yellow);
+      --rebar-light: #fef3c7;
+      --steel-line: var(--border-color);
+      --grid-line: rgba(15,61,92,0.08);
+      --pass: #1F7A4D;
+      --pass-bg: #E3F3EA;
+      --fail: #B3261E;
+      --fail-bg: #FBE8E6;
+      --warn: #8A6410;
+      --warn-bg: #FBF1DC;
+      --radius: 10px;
+      --font-display: 'Roboto', var(--font-display), sans-serif;
+      --font-body: 'Inter', var(--font-sans), sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * { box-sizing: border-box; }
+    
+    .zapata-tool {
+      max-width: 1280px;
+      margin: 0 auto;
+      background: var(--bg-color);
+      border-left: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      box-shadow: 0 0 60px rgba(28,43,54,0.06);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 40px;
+    }
+
+    header.titleblock {
+      background: transparent;
+      color: var(--ink);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      border-bottom: 2px solid var(--blueprint);
+    }
+
+    .titleblock-left { display: flex; align-items: center; gap: 16px; }
+    .drawing-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      border: 1.5px solid var(--accent-blue);
+      border-radius: 4px;
+      padding: 5px 9px;
+      color: var(--accent-blue);
+      white-space: nowrap;
+    }
+    .titleblock-left h1 {
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+    .titleblock-left p {
+      margin: 2px 0 0;
+      font-size: 14px;
+      color: var(--ink-soft);
+      font-family: var(--font-body);
+    }
+    .titleblock-right {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--ink-soft);
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    main.tool-main { max-width: 1280px; margin: 0 auto; padding: 26px 24px 20px; }
+    section { margin-bottom: 30px; }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blueprint);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+    .section-label::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--steel-line), transparent); }
+
+    /* ===== Inputs ===== */
+    .inputs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 1180px) { .inputs-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 760px) { .inputs-grid { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 2px rgba(15,61,92,0.06), 0 1px 14px rgba(15,61,92,0.05);
+      overflow: hidden;
+      border-top: 4px solid var(--steel-line);
+    }
+    .panel.panel-fixed { border-top-color: var(--blueprint); }
+    .panel.panel-geo { border-top-color: #3E7C59; }
+    .panel.panel-variable { border-top-color: var(--rebar); }
+    .panel-header {
+      padding: 10px 14px;
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      background: var(--panel-2);
+      border-bottom: 1px solid var(--steel-line);
+    }
+    .panel-fixed .panel-header { background: var(--blueprint-light); }
+    .panel-geo .panel-header { background: #E1EEE6; }
+    .panel-variable .panel-header { background: var(--rebar-light); }
+    .panel-header h2 { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin: 0; color: var(--ink); }
+    .panel-header span { font-size: 11px; color: var(--ink-soft); font-family: var(--font-mono); }
+
+    .group { padding: 10px 14px 2px; }
+    .group + .group { border-top: 1px dashed var(--steel-line); }
+    .group h3 {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin: 0 0 7px;
+      font-weight: 600;
+    }
+    .field-row { display: grid; grid-template-columns: 1fr 96px; gap: 8px; align-items: center; margin-bottom: 7px; }
+    .field-row.wide { grid-template-columns: 1fr 132px; }
+    .field-row label { font-size: 12.2px; }
+    .field-row .hint { display: block; font-size: 10.2px; color: var(--ink-faint); font-family: var(--font-mono); margin-top: 0; }
+    .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    input[type=text], select {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      padding: 6px 7px;
+      border: 1.5px solid var(--steel-line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      width: 100%;
+      transition: border-color .15s;
+    }
+    input[type=text]:focus, select:focus { outline: none; border-color: var(--blueprint); }
+    .panel-variable input[type=text]:focus, .panel-variable select:focus { border-color: var(--rebar); }
+    input.invalid { border-color: var(--fail); background: var(--fail-bg); }
+    .unit-suffix { font-size: 10px; color: var(--ink-faint); font-family: var(--font-mono); text-align: right; }
+
+    .btn {
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 9px 14px;
+      border-radius: 7px;
+      border: none;
+      cursor: pointer;
+      background: var(--blueprint);
+      color: #fff;
+      width: 100%;
+      letter-spacing: 0.02em;
+      transition: background .15s;
+    }
+    .btn:hover { background: var(--blueprint-deep); }
+    .btn.secondary { background: #5C6B76; }
+    .btn.secondary:hover { background: #47545E; }
+    .btn-note { font-family: var(--font-mono); font-size: 10.3px; color: var(--ink-faint); margin: 6px 0 8px; line-height: 1.35; }
+    .btn-note.ok { color: var(--pass); }
+    .btn-note.err { color: var(--fail); }
+
+    /* ===== Drawings ===== */
+    .drawing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 980px) { .drawing-grid { grid-template-columns: 1fr; } }
+    .maps-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 1180px) { .maps-grid { grid-template-columns: 1fr; } }
+    .drawing-card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 2px rgba(15,61,92,0.06), 0 1px 14px rgba(15,61,92,0.05);
+      overflow: hidden;
+    }
+    .drawing-card h3 {
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      margin: 0;
+      padding: 8px 13px;
+      background: var(--blueprint-deep);
+      color: #fff;
+      letter-spacing: 0.02em;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .drawing-card h3 em { font-style: normal; font-family: var(--font-mono); font-size: 10.5px; opacity: .72; }
+    .drawing-card .canvas {
+      background:
+        repeating-linear-gradient(0deg, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 18px),
+        repeating-linear-gradient(90deg, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 18px),
+        #fff;
+      padding: 5px;
+    }
+    .drawing-card .canvas.plain { background: #fff; }
+    svg { display: block; width: 100%; height: auto; }
+    .dim-line { stroke: var(--ink-soft); stroke-width: 1; }
+    .dim-text { font-family: var(--font-mono); font-size: 10.5px; fill: var(--ink-soft); }
+    .concrete { fill: #EEF1F3; stroke: var(--blueprint); stroke-width: 1.6; }
+    .column { fill: #F6EDE9; stroke: var(--rebar); stroke-width: 1.6; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 16px;
+      align-items: center;
+      padding: 8px 13px;
+      font-family: var(--font-mono);
+      font-size: 10.3px;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--panel-2);
+    }
+    .legend .sw { display: inline-block; width: 22px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; border: 1px solid rgba(0,0,0,.12); }
+
+    /* ===== Results ===== */
+    .overall-banner {
+      border-radius: var(--radius);
+      padding: 13px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-family: var(--font-display);
+      margin-bottom: 14px;
+      transition: background .2s;
+    }
+    .overall-banner.pass { background: var(--pass); color: #fff; }
+    .overall-banner.fail { background: var(--fail); color: #fff; }
+    .overall-banner .big { font-size: 17px; font-weight: 700; }
+    .overall-banner .sub { font-family: var(--font-mono); font-size: 11.8px; opacity: 0.92; }
+
+    .results-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 12px; align-items: start; }
+    .result-group {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 2px rgba(15,61,92,0.06), 0 1px 14px rgba(15,61,92,0.05);
+      overflow: hidden;
+    }
+    .result-group-header {
+      padding: 7px 13px;
+      background: var(--panel-2);
+      border-bottom: 1px solid var(--steel-line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .result-group-header h4 { margin: 0; font-family: var(--font-display); font-size: 12.3px; font-weight: 600; }
+    .result-group-header .apdo { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 13px;
+      border-bottom: 1px solid var(--panel-2);
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-row .rlabel { font-size: 12px; line-height: 1.3; }
+    .result-row .rlabel small { display: block; font-family: var(--font-mono); font-size: 9.8px; color: var(--ink-faint); }
+    .result-row .rvalue { font-family: var(--font-mono); font-size: 11.2px; color: var(--ink-soft); text-align: right; white-space: nowrap; }
+    .result-row.info { background: #FBFCFD; }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 2px 7px;
+      border-radius: 20px;
+      white-space: nowrap;
+      margin-left: 7px;
+    }
+    .badge.pass { background: var(--pass-bg); color: var(--pass); }
+    .badge.fail { background: var(--fail-bg); color: var(--fail); }
+    .badge.warn { background: var(--warn-bg); color: var(--warn); }
+    .rline { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
+
+    table.cases { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 10.8px; }
+    table.cases th {
+      text-align: right;
+      padding: 5px 10px;
+      background: var(--panel-2);
+      color: var(--ink-faint);
+      font-weight: 600;
+      border-bottom: 1px solid var(--steel-line);
+      font-size: 10px;
+      letter-spacing: .03em;
+    }
+    table.cases th:first-child, table.cases td:first-child { text-align: left; }
+    table.cases td { text-align: right; padding: 4px 10px; border-bottom: 1px solid var(--panel-2); color: var(--ink-soft); }
+    table.cases tr.gob td { background: var(--rebar-light); color: var(--ink); font-weight: 600; }
+
+    /* Technical Explanatory Section */
+    .explain {
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 24px 30px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color);
+    }
+    .explain-intro h2 { font-size: 18px; margin: 0 0 8px; color: var(--text-primary); }
+    .explain-intro p { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 20px; }
+    .step { display: flex; gap: 16px; margin-bottom: 20px; }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--accent-blue);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+    }
+    .step h3 { font-size: 14.5px; margin: 0 0 6px; color: var(--text-primary); }
+    .step p { font-size: 13px; color: var(--ink-soft); margin: 0 0 8px; }
+    .eq {
+      background: var(--bg-secondary);
+      border-left: 3px solid var(--accent-copper);
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-primary);
+      margin-top: 6px;
+    }
+
+    footer {
+      max-width: 1620px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .footer-content { display: flex; justify-content: space-between; align-items: center; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; margin-left: 16px; }
+    .footer-links a:hover { color: var(--accent-copper); }
+  </style>
+</head>
+
+<body>
+  <!-- Global Sticky Navbar -->
+  <header id="navbar">
+    <div class="container nav-container">
+      <a href="/en/index.html" class="logo" aria-label="RC Estructuras">
+        <img src="/assets/logos/rc_horizontal_color.svg" alt="RC Estructuras" class="brand-logo">
+      </a>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Navigation Menu" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      <nav class="nav-menu" id="navMenu">
+        <ul>
+          <li><a href="/en/index.html#about">About Us</a></li>
+          <li><a href="/en/index.html#services">Services</a></li>
+          <li><a href="/en/index.html#projects">Projects</a></li>
+          <li><a href="/en/isolated-footing-tool.html" class="active">Tools</a></li>
+          <li><a href="/en/index.html#contact">Contact</a></li>
+        </ul>
+        <div class="lang-switch">
+          <a href="/herramienta-zapatas-combinadas.html" class="lang-link">ES</a>
+          <span class="lang-sep">|</span>
+          <span class="lang-active">EN</span>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Tool Hub Selector Bar -->
+  <div class="tool-hub-container container" style="max-width: 1280px; margin: calc(var(--header-height) + 1.2rem) auto 0; padding: 0 1.5rem;">
+    <div class="tool-hub-nav">
+      <a href="/en/isolated-footing-tool.html" class="tool-tab-btn">Rigid Isolated Footings</a>
+      <a href="/en/combined-footing-tool.html" class="tool-tab-btn active">Rigid Combined Footings</a>
+    </div>
+  </div>
+
+  <div class="zapata-tool container">
+    <header class="titleblock">
+      <div class="titleblock-left">
+        <span class="drawing-tag">CF · COMBINED</span>
+        <div>
+          <h1>Rigid Combined Footings</h1>
+          <p>Ground bearing pressure verification, eccentricities, and relative stiffness evaluation (Hetényi)</p>
+        </div>
+      </div>
+      <div class="titleblock-right">
+        Rigid method with unilateral contact<br>
+        Envelope of 4 load combinations · Structural Code
+      </div>
+    </header>
+
+    <main class="tool-main">
+
+      <!-- ================= INPUT DATA ================= -->
+      <section>
+        <div class="section-label">Input Data</div>
+        <div class="inputs-grid">
+
+          <!-- PANEL 1: FIXED PARAMETERS -->
+          <div class="panel panel-fixed">
+            <div class="panel-header"><h2>Fixed Parameters</h2><span>materials · ground · factors</span></div>
+
+            <div class="group">
+              <h3>Concrete</h3>
+              <div class="cols2">
+                <div class="field-row"><label>f<sub>ck</sub><span class="hint">N/mm² (MPa)</span></label>
+                  <div><input type="text" inputmode="decimal" id="fck" value="25"></div></div>
+                <div class="field-row"><label>γ<sub>c</sub><span class="hint">partial factor</span></label>
+                  <div><input type="text" inputmode="decimal" id="gammac" value="1.5"></div></div>
+                <div class="field-row"><label>RC Density<span class="hint">kN/m³</span></label>
+                  <div><input type="text" inputmode="decimal" id="densidadHA" value="25"></div></div>
+                <div class="field-row"><label>γ<sub>f</sub><span class="hint">action factor</span></label>
+                  <div><input type="text" inputmode="decimal" id="gammaf" value="1.5"></div></div>
+              </div>
+            </div>
+
+            <div class="group">
+              <h3>Ground / Geotechnics</h3>
+              <div class="cols2">
+                <div class="field-row"><label>σ<sub>adm</sub><span class="hint">N/mm² (MPa)</span></label>
+                  <div><input type="text" inputmode="decimal" id="sigmaAdm" value="0.22"></div></div>
+                <div class="field-row"><label>k<sub>s</sub> subgrade<span class="hint">kN/m³</span></label>
+                  <div><input type="text" inputmode="decimal" id="ks" value="50000"></div></div>
+                <div class="field-row"><label>δ friction<span class="hint">º (degrees)</span></label>
+                  <div><input type="text" inputmode="decimal" id="delta" value="25"></div></div>
+                <div class="field-row"><label>Cohesion<span class="hint">kN/m²</span></label>
+                  <div><input type="text" inputmode="decimal" id="cohesion" value="0"></div></div>
+                <div class="field-row"><label>Max. factor<span class="hint">× σadm</span></label>
+                  <div><input type="text" inputmode="decimal" id="kSigmaMax" value="1.25"></div></div>
+              </div>
+            </div>
+
+            <div class="group">
+              <h3>Design Criteria &amp; Factors</h3>
+              <div class="cols2">
+                <div class="field-row"><label>Min. depth<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="hMinConstructivo" value="50"></div></div>
+                <div class="field-row"><label>e accidental<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="eMin" value="2"></div></div>
+                <div class="field-row"><label>Limit β·L<span class="hint">π/2 = 1.5708</span></label>
+                  <div><input type="text" inputmode="decimal" id="betaLim" value="1.5708"></div></div>
+                <div class="field-row"><label>Overturning SF<span class="hint">—</span></label>
+                  <div><input type="text" inputmode="decimal" id="csVuelcoMin" value="1.8"></div></div>
+                <div class="field-row"><label>Sliding SF<span class="hint">—</span></label>
+                  <div><input type="text" inputmode="decimal" id="csDeslMin" value="1.5"></div></div>
+                <div class="field-row"><label>Cantilever rig.<span class="hint">v ≤ 2h</span></label>
+                  <div><select id="exigirV2H">
+                    <option value="1" selected>Enforce</option>
+                    <option value="0">Informative</option>
+                  </select></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 2: GEOMETRY -->
+          <div class="panel panel-geo">
+            <div class="panel-header"><h2>Geometry</h2><span>footing and columns</span></div>
+
+            <div class="group">
+              <h3>Footing · A = axis connecting columns</h3>
+              <div class="cols2">
+                <div class="field-row"><label>A (length)<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="Azap" value="550"></div></div>
+                <div class="field-row"><label>B (width)<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="Bzap" value="350"></div></div>
+                <div class="field-row"><label>H (depth)<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="Hzap" value="110"></div></div>
+                <div class="field-row"><label>d<sub>C</sub> P1→center<span class="hint">cm · always ≥ 0</span></label>
+                  <div><input type="text" inputmode="decimal" id="dC" value="151"></div></div>
+              </div>
+            </div>
+
+            <div class="group">
+              <h3>Columns</h3>
+              <div class="cols2">
+                <div class="field-row"><label>D₁₂ center-to-center<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="D12" value="218"></div></div>
+                <div class="field-row"><label>&nbsp;<span class="hint">&nbsp;</span></label><div></div></div>
+                <div class="field-row"><label>a₁ (dir. A)<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="a1" value="25"></div></div>
+                <div class="field-row"><label>b₁ (dir. B)<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="b1" value="25"></div></div>
+                <div class="field-row"><label>a₂ (dir. A)<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="a2" value="25"></div></div>
+                <div class="field-row"><label>b₂ (dir. B)<span class="hint">cm</span></label>
+                  <div><input type="text" inputmode="decimal" id="b2" value="25"></div></div>
+              </div>
+            </div>
+
+            <div class="group">
+              <h3>Surface Loads on Footing (Uniform)</h3>
+              <div class="cols2">
+                <div class="field-row"><label>Permanent<span class="hint">kN/m²</span></label>
+                  <div><input type="text" inputmode="decimal" id="qPerm" value="0"></div></div>
+                <div class="field-row"><label>Variable<span class="hint">kN/m²</span></label>
+                  <div><input type="text" inputmode="decimal" id="qVar" value="0"></div></div>
+              </div>
+            </div>
+
+            <div class="group">
+              <h3>Automated Preliminary Sizing</h3>
+              <button class="btn" id="btnOptima">Compute Optimal Footing</button>
+              <div class="btn-note" id="notaOptima">Centers column axial resultant, begins at minimum contact area N/σ<sub>adm</sub>, steps A and B simultaneously in 5 cm increments; sweeps H from minimum depth. Returns minimum volume satisfying all criteria. Fields remain fully editable.</div>
+            </div>
+          </div>
+
+          <!-- PANEL 3: ACTIONS -->
+          <div class="panel panel-variable">
+            <div class="panel-header"><h2>Actions</h2><span>at column base · serviceability (SLS)</span></div>
+
+            <div class="group">
+              <h3>Column 1</h3>
+              <div class="cols2">
+                <div class="field-row"><label>N₁<span class="hint">kN</span></label>
+                  <div><input type="text" inputmode="decimal" id="N1" value="954.5"></div></div>
+                <div class="field-row"><label>&nbsp;<span class="hint">&nbsp;</span></label><div></div></div>
+                <div class="field-row"><label>M<sub>x1</sub><span class="hint">kN·m · bends in B</span></label>
+                  <div><input type="text" inputmode="decimal" id="Mx1" value="6.1"></div></div>
+                <div class="field-row"><label>M<sub>y1</sub><span class="hint">kN·m · bends in A</span></label>
+                  <div><input type="text" inputmode="decimal" id="My1" value="3.3"></div></div>
+                <div class="field-row"><label>V<sub>x1</sub><span class="hint">kN · dir. A</span></label>
+                  <div><input type="text" inputmode="decimal" id="Vx1" value="2.2"></div></div>
+                <div class="field-row"><label>V<sub>y1</sub><span class="hint">kN · dir. B</span></label>
+                  <div><input type="text" inputmode="decimal" id="Vy1" value="4.3"></div></div>
+              </div>
+              <div class="field-row wide"><label>M &amp; V Signs<span class="hint">column 1</span></label>
+                <div><select id="sig1">
+                  <option value="0" selected>Unknown → envelope</option>
+                  <option value="1">Known → as entered</option>
+                </select></div></div>
+            </div>
+
+            <div class="group">
+              <h3>Column 2</h3>
+              <div class="cols2">
+                <div class="field-row"><label>N₂<span class="hint">kN</span></label>
+                  <div><input type="text" inputmode="decimal" id="N2" value="2163"></div></div>
+                <div class="field-row"><label>&nbsp;<span class="hint">&nbsp;</span></label><div></div></div>
+                <div class="field-row"><label>M<sub>x2</sub><span class="hint">kN·m · bends in B</span></label>
+                  <div><input type="text" inputmode="decimal" id="Mx2" value="10.3"></div></div>
+                <div class="field-row"><label>M<sub>y2</sub><span class="hint">kN·m · bends in A</span></label>
+                  <div><input type="text" inputmode="decimal" id="My2" value="3.3"></div></div>
+                <div class="field-row"><label>V<sub>x2</sub><span class="hint">kN · dir. A</span></label>
+                  <div><input type="text" inputmode="decimal" id="Vx2" value="5.1"></div></div>
+                <div class="field-row"><label>V<sub>y2</sub><span class="hint">kN · dir. B</span></label>
+                  <div><input type="text" inputmode="decimal" id="Vy2" value="8.0"></div></div>
+              </div>
+              <div class="field-row wide"><label>M &amp; V Signs<span class="hint">column 2</span></label>
+                <div><select id="sig2">
+                  <option value="0" selected>Unknown → envelope</option>
+                  <option value="1">Known → as entered</option>
+                </select></div></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= DRAWINGS ================= -->
+      <section>
+        <div class="section-label">Geometry and Soil Pressure Diagram</div>
+        <div class="drawing-grid">
+          <div class="drawing-card">
+            <h3>Plan View <em>A × B</em></h3>
+            <div class="canvas"><svg id="svgPlanta" viewBox="0 0 640 340"></svg></div>
+          </div>
+          <div class="drawing-card">
+            <h3>Longitudinal Elevation <em>envelope of ground pressure along axis A</em></h3>
+            <div class="canvas"><svg id="svgAlzado" viewBox="0 0 640 340"></svg></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MAPS ================= -->
+      <section>
+        <div class="section-label">Ground Bearing Pressure Distribution Maps</div>
+        <div class="maps-grid">
+          <div class="drawing-card">
+            <h3>σ Maximum <em>envelope · bottom rebar</em></h3>
+            <div class="canvas plain"><svg id="svgMapMax" viewBox="0 0 420 300"></svg></div>
+          </div>
+          <div class="drawing-card">
+            <h3>σ Minimum <em>envelope · top rebar</em></h3>
+            <div class="canvas plain"><svg id="svgMapMin" viewBox="0 0 420 300"></svg></div>
+          </div>
+          <div class="drawing-card">
+            <h3>σ Mean Local <em>(max+min)/2 · geotechnics</em></h3>
+            <div class="canvas plain"><svg id="svgMapMed" viewBox="0 0 420 300"></svg></div>
+          </div>
+        </div>
+        <div class="drawing-card" style="margin-top:12px;">
+          <div class="legend" id="legend"></div>
+        </div>
+      </section>
+
+      <!-- ================= RESULTS ================= -->
+      <section>
+        <div class="section-label">Structural &amp; Geotechnical Verification</div>
+        <div id="overallBanner" class="overall-banner"></div>
+        <div id="resultsGroups" class="results-groups"></div>
+      </section>
+
+      <!-- ================= TECHNICAL MEMORANDUM ================= -->
+      <section style="margin-top: 40px;">
+        <div class="section-label">Theoretical Foundations &amp; Scope of Analysis</div>
+        <div class="explain">
+          <div class="explain-intro">
+            <h2>Descriptive Memorandum — Rigid Combined Footings</h2>
+            <p>Verification of ground bearing pressures and stiffness classification based on Eurocode 2 &amp; 7 / Structural Code and the Hetényi beam-on-elastic-foundation (Winkler) model.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h3>Analysis Scope and Verification Objectives</h3>
+              <p>The analysis calculates the plan geometry (A, B) and depth (H) required to ensure that ground bearing pressures transmitted by a two-column rigid combined footing remain strictly below allowable soil capacities, preventing structural uplift and guaranteeing rigid body behaviour.</p>
+              <div class="eq">σ_max ≤ 1.25 · σ_adm    |    σ_mean ≤ σ_adm    |    σ_min > 0 (no uplift)</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h3>Relative Rigidity Classification (Hetényi Criterion)</h3>
+              <p>For the planar distribution of soil reactions to be valid, the foundation element must behave as a rigid solid relative to subgrade flexibility. The relative stiffness coefficient over continuous elastic support is computed as:</p>
+              <div class="eq">β = ∜( k_s · B / (4 · E_c · I) )    [m⁻¹]    |    I = B · H³ / 12</div>
+              <p>The product of the characteristic elastic length and the total foundation length must satisfy the rigidity criterion:</p>
+              <div class="eq">β · L  ≤  π / 2  ≈  1.5708    →    Rigid Element Verified</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <h3>Load Envelope &amp; Global Stability Checks</h3>
+              <p>Four extreme sign combinations for bending moments and transverse shears are evaluated. Safety factors against sliding and overturning are systematically verified:</p>
+              <div class="eq">SF_overturning = (A / 2) / |e_x| ≥ 1.8    |    SF_sliding = (N_C · tan δ + c · A · B) / √(ΣV_x² + ΣV_y²) ≥ 1.5</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div class="container footer-content">
+      <p>&copy; 2026 RC Estructuras. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/company/rc-estructuras/?viewAsMember=true" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="/en/index.html">Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+(function(){
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = id => document.getElementById(id);
+  const getN = id => {
+    const elm = $(id);
+    if(!elm) return 0;
+    const raw = (elm.value||'').trim().replace(/\s/g,'').replace(',', '.');
+    const v = parseFloat(raw);
+    const ok = raw !== '' && isFinite(v);
+    if (elm.classList) elm.classList.toggle('invalid', !ok);
+    return ok ? v : 0;
+  };
+  function fmt(v, dec){
+    if (v===Infinity) return "\u221e";
+    if (!isFinite(v)) return "\u2014";
+    dec = dec===undefined?2:dec;
+    return v.toLocaleString('en-US',{minimumFractionDigits:dec, maximumFractionDigits:dec});
+  }
+
+  // =================================================================
+  // GEOMETRIC ENGINE — unilateral contact footing/soil
+  // =================================================================
+  function recortar(P, a, b, c){
+    const out = [];
+    const f = p => a + b*p[0] + c*p[1];
+    for (let i=0; i<P.length; i++){
+      const cur = P[i], nxt = P[(i+1)%P.length];
+      const fc = f(cur), fn = f(nxt);
+      if (fc >= 0) out.push(cur);
+      if ((fc > 0 && fn < 0) || (fc < 0 && fn > 0)){
+        const t = fc/(fc-fn);
+        out.push([cur[0]+t*(nxt[0]-cur[0]), cur[1]+t*(nxt[1]-cur[1])]);
+      }
+    }
+    return out;
+  }
+  function momentos(P){
+    let I0=0, Ix=0, Iy=0, Ixx=0, Ixy=0, Iyy=0;
+    for (let i=1; i<P.length-1; i++){
+      const x1=P[0][0], y1=P[0][1];
+      const x2=P[i][0], y2=P[i][1];
+      const x3=P[i+1][0], y3=P[i+1][1];
+      const Ar = ((x2-x1)*(y3-y1) - (x3-x1)*(y2-y1))/2;
+      const sx = x1+x2+x3, sy = y1+y2+y3;
+      I0  += Ar;
+      Ix  += Ar*sx/3;
+      Iy  += Ar*sy/3;
+      Ixx += Ar/12*(sx*sx + x1*x1 + x2*x2 + x3*x3);
+      Iyy += Ar/12*(sy*sy + y1*y1 + y2*y2 + y3*y3);
+      Ixy += Ar/12*(sx*sy + x1*y1 + x2*y2 + x3*y3);
+    }
+    return {I0,Ix,Iy,Ixx,Ixy,Iyy};
+  }
+  function resolver3(J, r){
+    const M = [[J[0][0],J[0][1],J[0][2],r[0]],
+               [J[1][0],J[1][1],J[1][2],r[1]],
+               [J[2][0],J[2][1],J[2][2],r[2]]];
+    for (let k=0; k<3; k++){
+      let piv=k;
+      for (let i=k+1;i<3;i++) if (Math.abs(M[i][k])>Math.abs(M[piv][k])) piv=i;
+      if (Math.abs(M[piv][k]) < 1e-18) return null;
+      const tmp=M[k]; M[k]=M[piv]; M[piv]=tmp;
+      for (let i=k+1;i<3;i++){
+        const f = M[i][k]/M[k][k];
+        for (let j=k;j<4;j++) M[i][j] -= f*M[k][j];
+      }
+    }
+    const s=[0,0,0];
+    for (let i=2;i>=0;i--){
+      let acc=M[i][3];
+      for (let j=i+1;j<3;j++) acc -= M[i][j]*s[j];
+      s[i]=acc/M[i][i];
+    }
+    return s;
+  }
+  function planoPresiones(N, ex, ey, A, B){
+    const res = {ok:false, sinEquilibrio:false, a:0, b:0, c:0,
+                 despegue:false, areaComp:0, frac:0, sigmaMax:0, sigmaMinLineal:0, poly:null};
+    if (!(N > 0) || !(A > 0) || !(B > 0)) return res;
+    const rect = [[-A/2,-B/2],[A/2,-B/2],[A/2,B/2],[-A/2,B/2]];
+    const aL = N/(A*B);
+    const bL = 12*N*ex/(B*A*A*A);
+    const cL = 12*N*ey/(A*B*B*B);
+    const valsL = rect.map(p => aL + bL*p[0] + cL*p[1]);
+    res.sigmaMinLineal = Math.min.apply(null, valsL);
+    if (res.sigmaMinLineal >= -1e-12){
+      res.ok = true; res.a=aL; res.b=bL; res.c=cL;
+      res.despegue = false; res.areaComp = A*B; res.frac = 1;
+      res.sigmaMax = Math.max.apply(null, valsL);
+      res.poly = rect;
+      return res;
+    }
+    if (Math.abs(ex) >= A/2 - 1e-12 || Math.abs(ey) >= B/2 - 1e-12){
+      res.sinEquilibrio = true; return res;
+    }
+    const semillas = [[aL,bL,cL]];
+    if (Math.abs(ex) > A/6){
+      const lc = 3*(A/2 - Math.abs(ex));
+      const sg = ex >= 0 ? 1 : -1;
+      const smax = 2*N/(B*lc);
+      const xn = sg*(A/2 - lc);
+      semillas.push([-sg*smax*xn/lc, sg*smax/lc, 0]);
+    }
+    if (Math.abs(ey) > B/6){
+      const lc = 3*(B/2 - Math.abs(ey));
+      const sg = ey >= 0 ? 1 : -1;
+      const smax = 2*N/(A*lc);
+      const yn = sg*(B/2 - lc);
+      semillas.push([-sg*smax*yn/lc, 0, sg*smax/lc]);
+    }
+    const tol = 1e-4*N;
+    for (const [a0,b0,c0] of semillas){
+      let a=a0, b=b0, c=c0;
+      for (let iter=0; iter<35; iter++){
+        const P = recortar(rect, a, b, c);
+        if (P.length < 3) break;
+        const m = momentos(P);
+        const f0 = a*m.I0  + b*m.Ix  + c*m.Iy  - N;
+        const f1 = a*m.Ix  + b*m.Ixx + c*m.Ixy - N*ex;
+        const f2 = a*m.Iy  + b*m.Ixy + c*m.Iyy - N*ey;
+        if (Math.hypot(f0,f1,f2) < tol){
+          res.ok = true; res.a=a; res.b=b; res.c=c;
+          res.despegue = true; res.areaComp = m.I0; res.frac = m.I0/(A*B);
+          let smax = 0;
+          for (const p of P){ const s = a + b*p[0] + c*p[1]; if (s>smax) smax=s; }
+          res.sigmaMax = smax;
+          res.poly = P;
+          return res;
+        }
+        const J = [[m.I0, m.Ix, m.Iy], [m.Ix, m.Ixx, m.Ixy], [m.Iy, m.Ixy, m.Iyy]];
+        const delta = resolver3(J, [-f0, -f1, -f2]);
+        if (!delta) break;
+        a += delta[0]; b += delta[1]; c += delta[2];
+      }
+    }
+    return res;
+  }
+  const pAt = (pl, x, y) => Math.max(0, pl.a + pl.b*x + pl.c*y);
+
+  // =================================================================
+  // DATA PARSER
+  // =================================================================
+  function leerDatos(){
+    return {
+      fck:              getN('fck'),
+      gammac:           getN('gammac'),
+      densidadHA:       getN('densidadHA'),
+      gammaf:           getN('gammaf'),
+      sigmaAdm:         getN('sigmaAdm') * 1000,
+      ks:               getN('ks'),
+      delta:            getN('delta') * Math.PI/180,
+      cohesion:         getN('cohesion'),
+      kSigmaMax:        getN('kSigmaMax'),
+      hMinConstructivo: getN('hMinConstructivo') / 100,
+      eMin:             getN('eMin') / 100,
+      betaLim:          getN('betaLim'),
+      csVuelcoMin:      getN('csVuelcoMin'),
+      csDeslMin:        getN('csDeslMin'),
+      exigirV2H:        parseInt($('exigirV2H').value, 10),
+      A:                getN('Azap') / 100,
+      B:                getN('Bzap') / 100,
+      H:                getN('Hzap') / 100,
+      dC:               getN('dC') / 100,
+      D12:              getN('D12') / 100,
+      a1:               getN('a1') / 100,
+      b1:               getN('b1') / 100,
+      a2:               getN('a2') / 100,
+      b2:               getN('b2') / 100,
+      qPerm:            getN('qPerm'),
+      qVar:             getN('qVar'),
+      N1:               getN('N1'),
+      Mx1:              getN('Mx1'),
+      My1:              getN('My1'),
+      Vx1:              getN('Vx1'),
+      Vy1:              getN('Vy1'),
+      sig1:             parseInt($('sig1').value, 10),
+      N2:               getN('N2'),
+      Mx2:              getN('Mx2'),
+      My2:              getN('My2'),
+      Vx2:              getN('Vx2'),
+      Vy2:              getN('Vy2'),
+      sig2:             parseInt($('sig2').value, 10),
+    };
+  }
+
+  function dCoptimo(d){
+    const S = d.N1 + d.N2;
+    if (S <= 0) return 0;
+    return Math.max(0, (d.N2 * d.D12) / S);
+  }
+
+  // =================================================================
+  // EVALUATION ENGINE
+  // =================================================================
+  function evaluar(d, A, B, H, dC){
+    const r = { A, B, H, dC };
+    r.x1 = -dC;
+    r.x2 = -dC + d.D12;
+    r.v1izq = (r.x1 - d.a1/2) - (-A/2);
+    r.v2der = (A/2) - (r.x2 + d.a2/2);
+    r.vB1   = (B - d.b1)/2;
+    r.vB2   = (B - d.b2)/2;
+    r.vMax  = Math.max(r.v1izq, r.v2der, r.vB1, r.vB2);
+    r.luzLibre = d.D12 - d.a1/2 - d.a2/2;
+
+    r.pilaresDentro = (r.v1izq >= -1e-6) && (r.v2der >= -1e-6) && (r.vB1 >= -1e-6) && (r.vB2 >= -1e-6);
+    r.pilaresNoSolapan = r.luzLibre > 0;
+    r.cantoMinOK = H >= d.hMinConstructivo - 1e-6;
+
+    r.PP   = A * B * H * d.densidadHA;
+    r.Qsup = A * B * (d.qPerm + d.qVar);
+    r.NC   = d.N1 + d.N2 + r.PP + r.Qsup;
+
+    r.casos = [];
+    const sgnA = d.sig1 ? [1] : [1, -1];
+    const sgnB = d.sig2 ? [1] : [1, -1];
+    let cid = 1;
+    for (const sa of sgnA){
+      for (const sb of sgnB){
+        const MA = (d.N1*r.x1 + d.N2*r.x2) + (sa*d.My1 + sb*d.My2) + (sa*d.Vx1 + sb*d.Vx2)*H;
+        const MB = (sa*d.Mx1 + sb*d.Mx2) + (sa*d.Vy1 + sb*d.Vy2)*H;
+        const ex0 = MA / r.NC, ey0 = MB / r.NC;
+        const ex = ex0 + (ex0 >= 0 ? 1 : -1)*d.eMin;
+        const ey = ey0 + (ey0 >= 0 ? 1 : -1)*d.eMin;
+        const pl = planoPresiones(r.NC, ex, ey, A, B);
+        r.casos.push({ id: `C${cid++}`, sa, sb, MA, MB, ex, ey, pl });
+      }
+    }
+
+    r.calculoOK = r.casos.every(c => c.pl.ok);
+    r.sinEquilibrio = r.casos.some(c => c.pl.sinEquilibrio);
+
+    r.sigmaMed = r.NC / (A * B);
+    r.sigmaMaxEnv = 0;
+    r.sigmaMinEnv = Infinity;
+    r.fracMin = 1;
+    r.casoGobierna = null;
+    r.exAbs = 0; r.eyAbs = 0;
+
+    for (const c of r.casos){
+      if (Math.abs(c.ex) > r.exAbs) r.exAbs = Math.abs(c.ex);
+      if (Math.abs(c.ey) > r.eyAbs) r.eyAbs = Math.abs(c.ey);
+      if (c.pl.ok){
+        if (c.pl.sigmaMax > r.sigmaMaxEnv){
+          r.sigmaMaxEnv = c.pl.sigmaMax;
+          r.casoGobierna = c;
+        }
+        if (c.pl.sigmaMinLineal < r.sigmaMinEnv) r.sigmaMinEnv = c.pl.sigmaMinLineal;
+        if (c.pl.frac < r.fracMin) r.fracMin = c.pl.frac;
+      }
+    }
+
+    // Hetényi
+    const Ec = 8500 * Math.pow(d.fck + 8, 1/3) * 1000;
+    const I  = B * Math.pow(H, 3) / 12;
+    r.Ec = Ec; r.I = I;
+    r.beta = Math.pow((d.ks * B) / (4 * Ec * I), 0.25);
+    r.betaL = r.beta * A;
+    r.Lelastica = 1 / r.beta;
+
+    // Checks
+    r.okSigmaMed = r.sigmaMed <= d.sigmaAdm + 1e-3;
+    r.okSigmaMax = r.sigmaMaxEnv <= d.kSigmaMax * d.sigmaAdm + 1e-3;
+    r.okSigmaMin = r.sigmaMinEnv >= -1e-6;
+    r.okRigidez  = r.betaL <= d.betaLim + 1e-4;
+    r.v2h        = r.vMax <= 2 * H + 1e-4;
+
+    r.rSigmaMed = r.sigmaMed / d.sigmaAdm;
+    r.rSigmaMax = r.sigmaMaxEnv / (d.kSigmaMax * d.sigmaAdm);
+    r.rRigidez  = r.betaL / d.betaLim;
+
+    // Stability
+    r.Hres = Math.hypot(d.Vx1 + d.Vx2, d.Vy1 + d.Vy2);
+    r.Rdes = r.NC * Math.tan(d.delta) + d.cohesion * A * B;
+    r.csDesl = r.Hres > 1e-6 ? r.Rdes / r.Hres : Infinity;
+    r.csVuelcoA = r.exAbs > 1e-6 ? (A/2) / r.exAbs : Infinity;
+    r.csVuelcoB = r.eyAbs > 1e-6 ? (B/2) / r.eyAbs : Infinity;
+    r.okDesl   = r.csDesl >= d.csDeslMin - 1e-4;
+    r.okVuelco = (r.csVuelcoA >= d.csVuelcoMin - 1e-4) && (r.csVuelcoB >= d.csVuelcoMin - 1e-4);
+
+    return r;
+  }
+
+  function cumpleTodo(d, r){
+    if (!r.pilaresDentro || !r.pilaresNoSolapan || !r.cantoMinOK) return false;
+    if (!r.calculoOK) return false;
+    if (!r.okSigmaMed || !r.okSigmaMax || !r.okSigmaMin) return false;
+    if (!r.okRigidez) return false;
+    if (d.exigirV2H && !r.v2h) return false;
+    if (!r.okDesl || !r.okVuelco) return false;
+    return true;
+  }
+
+  // =================================================================
+  // OPTIMIZER
+  // =================================================================
+  function optimizar(d){
+    const dC = dCoptimo(d);
+    const S = d.N1 + d.N2;
+    const AreaMin = (S * 1.25) / d.sigmaAdm;
+    const Lcols = d.D12 + (d.a1 + d.a2)/2 + 0.30;
+    const A_init = Math.max(Lcols, Math.sqrt(AreaMin * 1.4));
+    const B_init = Math.max(0.60, AreaMin / A_init);
+
+    const stepDim = 0.05;
+    const stepH   = 0.05;
+    const hMin    = Math.max(0.40, d.hMinConstructivo);
+    const hMax    = 2.50;
+
+    let best = null;
+    let minVol = Infinity;
+
+    for (let k = 0; k <= 80; k++){
+      const A = Math.round((A_init + k * stepDim) * 100) / 100;
+      const B = Math.round((Math.max(B_init + k * stepDim, 0.60)) * 100) / 100;
+      if (A > 18.0) break;
+
+      for (let H = hMin; H <= hMax + 1e-6; H += stepH){
+        H = Math.round(H * 100) / 100;
+        const V = A * B * H;
+        if (V >= minVol) continue;
+        const r = evaluar(d, A, B, H, dC);
+        if (cumpleTodo(d, r)){
+          minVol = V;
+          best = { A, B, H, dC, V, r };
+          break;
+        }
+      }
+    }
+    return best;
+  }
+
+  // =================================================================
+  // SVG DRAWINGS & MAPS
+  // =================================================================
+  const el = (t, a) => {
+    const e = document.createElementNS(NS, t);
+    for (const k in a) e.setAttribute(k, a[k]);
+    return e;
+  };
+  const txt = (svg, x, y, str, anchor='middle', font, fill) => {
+    const t = el('text', { x, y, 'text-anchor': anchor, class: 'dim-text' });
+    if (font) t.setAttribute('font-family', font);
+    if (fill) t.setAttribute('fill', fill);
+    t.textContent = str;
+    svg.appendChild(t);
+  };
+  function clearSvg(svg){ while (svg.firstChild) svg.removeChild(svg.firstChild); }
+  function colorSigma(v, sadm, kmax){
+    if (v <= 0) return '#E2E8F0';
+    const s1 = sadm, s2 = kmax * sadm;
+    if (v <= s1){
+      const t = Math.max(0, Math.min(1, v / s1));
+      const r = Math.round(30 + t * (45 - 30));
+      const g = Math.round(90 + t * (150 - 90));
+      const b = Math.round(150 + t * (90 - 150));
+      return `rgb(${r},${g},${b})`;
+    } else if (v <= s2){
+      const t = Math.max(0, Math.min(1, (v - s1) / (s2 - s1)));
+      const r = Math.round(210 + t * (215 - 210));
+      const g = Math.round(140 - t * (70));
+      const b = Math.round(40 - t * (15));
+      return `rgb(${r},${g},${b})`;
+    } else {
+      return '#B3261E';
+    }
+  }
+
+  function drawPlanta(d, r){
+    const svg = $('svgPlanta'); clearSvg(svg);
+    const VW=640, VH=340, padL=55, padR=40, padT=40, padB=50;
+    const aw = VW-padL-padR, ah = VH-padT-padB;
+    if (!(r.A>0 && r.B>0)) return;
+    const sc = Math.min(aw/r.A, ah/r.B);
+    const fw = r.A*sc, fh = r.B*sc;
+    const fx = padL + (aw-fw)/2, fy = padT + (ah-fh)/2;
+    const X = x => fx + fw/2 + x*sc;
+    const Y = y => fy + fh/2 - y*sc;
+
+    svg.appendChild(el('rect',{x:fx, y:fy, width:fw, height:fh, class:'concrete', rx:2}));
+    svg.appendChild(el('line',{x1:fx-15, y1:fy+fh/2, x2:fx+fw+15, y2:fy+fh/2, stroke:'var(--ink-faint)','stroke-width':0.8,'stroke-dasharray':'5,3'}));
+    svg.appendChild(el('line',{x1:fx+fw/2, y1:fy-12, x2:fx+fw/2, y2:fy+fh+12, stroke:'var(--ink-faint)','stroke-width':0.8,'stroke-dasharray':'5,3'}));
+
+    const cols = [{x:r.x1,a:d.a1,b:d.b1,n:'P1',N:d.N1},{x:r.x2,a:d.a2,b:d.b2,n:'P2',N:d.N2}];
+    for (const c of cols){
+      const cx = X(c.x), cy = fy+fh/2, w = c.a*sc, h = c.b*sc;
+      svg.appendChild(el('rect',{x:cx-w/2, y:cy-h/2, width:w, height:h, class:'column', rx:1}));
+      svg.appendChild(el('line',{x1:cx-w/2, y1:cy-h/2, x2:cx+w/2, y2:cy+h/2, stroke:'var(--rebar)','stroke-width':0.8}));
+      svg.appendChild(el('line',{x1:cx-w/2, y1:cy+h/2, x2:cx+w/2, y2:cy-h/2, stroke:'var(--rebar)','stroke-width':0.8}));
+      txt(svg, cx, cy-h/2-6, `${c.n} (${fmt(c.N,0)} kN)`, 'middle', null, 'var(--rebar)');
+    }
+
+    // Dims
+    const ydimB = fy+fh+24;
+    svg.appendChild(el('line',{x1:fx, y1:ydimB, x2:fx+fw, y2:ydimB, class:'dim-line'}));
+    svg.appendChild(el('line',{x1:fx, y1:ydimB-4, x2:fx, y2:ydimB+4, class:'dim-line'}));
+    svg.appendChild(el('line',{x1:fx+fw, y1:ydimB-4, x2:fx+fw, y2:ydimB+4, class:'dim-line'}));
+    txt(svg, fx+fw/2, ydimB+14, `A = ${fmt(r.A*100,0)} cm`);
+
+    const xdimL = fx-24;
+    svg.appendChild(el('line',{x1:xdimL, y1:fy, x2:xdimL, y2:fy+fh, class:'dim-line'}));
+    svg.appendChild(el('line',{x1:xdimL-4, y1:fy, x2:xdimL+4, y2:fy, class:'dim-line'}));
+    svg.appendChild(el('line',{x1:xdimL-4, y1:fy+fh, x2:xdimL+4, y2:fy+fh, class:'dim-line'}));
+    txt(svg, xdimL-6, fy+fh/2+4, `B = ${fmt(r.B*100,0)}`, 'end');
+
+    // D12 Dim
+    const yD12 = fy-16;
+    svg.appendChild(el('line',{x1:X(r.x1), y1:yD12, x2:X(r.x2), y2:yD12, class:'dim-line'}));
+    svg.appendChild(el('line',{x1:X(r.x1), y1:yD12-3, x2:X(r.x1), y2:yD12+3, class:'dim-line'}));
+    svg.appendChild(el('line',{x1:X(r.x2), y1:yD12-3, x2:X(r.x2), y2:yD12+3, class:'dim-line'}));
+    txt(svg, (X(r.x1)+X(r.x2))/2, yD12-4, `D₁₂ = ${fmt(d.D12*100,0)} cm`);
+  }
+
+  function drawAlzado(d, r){
+    const svg = $('svgAlzado'); clearSvg(svg);
+    const VW=640, VH=340, padL=55, padR=40, padT=80, padB=130;
+    const aw = VW-padL-padR;
+    if (!(r.A>0 && r.H>0)) return;
+    const sc = aw / r.A;
+    const fw = r.A*sc, fh = Math.max(28, Math.min(100, r.H*sc));
+    const fx = padL, fy = padT;
+    const X = x => fx + fw/2 + x*sc;
+
+    // Columns
+    const cols = [{x:r.x1,a:d.a1,n:'P1',N:d.N1},{x:r.x2,a:d.a2,n:'P2',N:d.N2}];
+    for (const c of cols){
+      svg.appendChild(el('rect',{x:X(c.x)-c.a*sc/2, y:fy-52, width:c.a*sc, height:52, class:'column', rx:1}));
+      txt(svg, X(c.x), fy-58, `${c.n} · ${fmt(c.N,0)} kN`, 'middle', null, 'var(--rebar)');
+    }
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,class:'concrete',rx:2}));
+    txt(svg, fx-8, fy+fh/2+3, `H=${fmt(r.H*100,0)}`, 'end');
+
+    if (!r.calculoOK){ return; }
+
+    // Pressure envelope
+    const n = 140, ys = [-r.B/2, 0, r.B/2];
+    const up = [], lo = [];
+    let pmax = 0;
+    for (let i=0;i<=n;i++){
+      const x = -r.A/2 + r.A*i/n;
+      let mx = -Infinity, mn = Infinity;
+      for (const c of r.casos){ if(!c.pl.ok) continue;
+        for (const y of ys){ const v = pAt(c.pl,x,y); if(v>mx)mx=v; if(v<mn)mn=v; } }
+      up.push([x,mx]); lo.push([x,mn]); pmax = Math.max(pmax, mx);
+    }
+    const hmax = 92;
+    const scP = pmax>0 ? hmax/pmax : 0;
+    const yb = fy + fh + 4;
+    const pts = arr => arr.map(p => `${X(p[0])},${yb + p[1]*scP}`).join(' ');
+    svg.appendChild(el('polygon',{points:`${X(-r.A/2)},${yb} ${pts(up)} ${X(r.A/2)},${yb}`,
+      fill:'rgba(30,45,61,0.16)', stroke:'var(--blueprint)','stroke-width':1.5}));
+    svg.appendChild(el('polyline',{points:pts(lo), fill:'none', stroke:'var(--rebar)','stroke-width':1.5,'stroke-dasharray':'4,3'}));
+    svg.appendChild(el('line',{x1:X(-r.A/2),y1:yb,x2:X(r.A/2),y2:yb,class:'dim-line'}));
+
+    for (const [lim,col,lab] of [[d.sigmaAdm,'#3E7C59','σadm'],[d.kSigmaMax*d.sigmaAdm,'var(--fail)',`${fmt(d.kSigmaMax,2)}·σadm`]]){
+      const yy = yb + lim*scP;
+      if (yy < VH-4){
+        svg.appendChild(el('line',{x1:X(-r.A/2),y1:yy,x2:X(r.A/2),y2:yy,stroke:col,'stroke-width':1,'stroke-dasharray':'6,4'}));
+        txt(svg, X(r.A/2)+2, yy+3, lab, 'start', null, col);
+      }
+    }
+    txt(svg, X(-r.A/2), yb-4, `max ${fmt(pmax,0)} kPa`, 'start', null, 'var(--blueprint)');
+    txt(svg, VW/2, padT-16, 'Pressure envelope (upper blue · lower red dashed)', 'middle', null, 'var(--ink-faint)');
+  }
+
+  function drawMapa(svgId, d, r, tipo){
+    const svg = $(svgId); clearSvg(svg);
+    const VW=420, VH=300, padL=30, padR=30, padT=26, padB=34;
+    const aw = VW-padL-padR, ah = VH-padT-padB;
+    if (!(r.A>0 && r.B>0)) return;
+    const sc = Math.min(aw/r.A, ah/r.B);
+    const fw = r.A*sc, fh = r.B*sc;
+    const fx = padL + (aw-fw)/2, fy = padT + (ah-fh)/2;
+    if (!r.calculoOK) return;
+
+    const nx = 72, ny = Math.max(8, Math.round(72*r.B/r.A));
+    const cw = fw/nx, ch = fh/ny;
+    let vmin = Infinity, vmax = -Infinity;
+    const g = el('g',{});
+    for (let i=0;i<nx;i++){
+      for (let j=0;j<ny;j++){
+        const x = -r.A/2 + r.A*(i+0.5)/nx;
+        const y = -r.B/2 + r.B*(j+0.5)/ny;
+        let mx=-Infinity, mn=Infinity;
+        for (const c of r.casos){ if(!c.pl.ok) continue;
+          const v = pAt(c.pl,x,y); if(v>mx)mx=v; if(v<mn)mn=v; }
+        const v = tipo==='max' ? mx : tipo==='min' ? mn : (mx+mn)/2;
+        vmin = Math.min(vmin,v); vmax = Math.max(vmax,v);
+        g.appendChild(el('rect',{x:fx+i*cw, y:fy+fh-(j+1)*ch, width:cw+0.6, height:ch+0.6,
+          fill:colorSigma(v, d.sigmaAdm, d.kSigmaMax), 'shape-rendering':'crispEdges'}));
+      }
+    }
+    svg.appendChild(g);
+    svg.appendChild(el('rect',{x:fx,y:fy,width:fw,height:fh,fill:'none',stroke:'var(--blueprint)','stroke-width':1.4}));
+
+    const cols = [{x:r.x1,a:d.a1,b:d.b1},{x:r.x2,a:d.a2,b:d.b2}];
+    for (const c of cols){
+      svg.appendChild(el('rect',{x:fx+fw/2+(c.x-c.a/2)*sc, y:fy+fh/2-(c.b/2)*sc,
+        width:c.a*sc, height:c.b*sc, fill:'none', stroke:'var(--rebar)','stroke-width':1.6}));
+    }
+    txt(svg, VW/2, VH-10, `min ${fmt(vmin,0)} · max ${fmt(vmax,0)} kPa`, 'middle', null, 'var(--ink-soft)');
+  }
+
+  function renderLeyenda(d){
+    const L = $('legend');
+    const kmax = d.kSigmaMax, sadm = d.sigmaAdm;
+    const stops = [
+      ['#D3DAE0','σ = 0 · uplift'],
+      [colorSigma(0.25*sadm,sadm,kmax), `0.25·σadm`],
+      [colorSigma(0.60*sadm,sadm,kmax), `0.60·σadm`],
+      [colorSigma(1.00*sadm,sadm,kmax), `σadm = ${fmt(sadm,0)} kPa`],
+      [colorSigma(1.10*sadm,sadm,kmax), `> σadm`],
+      ['#B3261E', `> ${fmt(kmax,2)}·σadm`]
+    ];
+    L.innerHTML = stops.map(s=>`<span><span class="sw" style="background:${s[0]}"></span>${s[1]}</span>`).join('')
+      + `<span style="margin-left:auto">Common scale across all three maps · values in kPa</span>`;
+  }
+
+  // =================================================================
+  // RESULTS RENDERING
+  // =================================================================
+  function pill(ok, txtOk, txtNo){ return `<span class="badge ${ok?'pass':'fail'}">${ok?(txtOk||'PASS'):(txtNo||'FAIL')}</span>`; }
+  function row(label, sub, value, ok, ratio){
+    const r = (ratio!==undefined && isFinite(ratio)) ? `<div class="rvalue">util = ${fmt(ratio,3)}</div>` : '';
+    return `<div class="result-row">
+      <div class="rlabel">${label}${sub?`<small>${sub}</small>`:''}</div>
+      <div><div class="rline"><span class="rvalue">${value}</span>${ok===null?'':pill(ok)}</div>${r}</div></div>`;
+  }
+  function info(label, value){
+    return `<div class="result-row info"><div class="rlabel">${label}</div><div class="rvalue">${value}</div></div>`;
+  }
+  function group(title, apdo, inner){
+    return `<div class="result-group">
+      <div class="result-group-header"><h4>${title}</h4><span class="apdo">${apdo}</span></div>${inner}</div>`;
+  }
+
+  function render(d, r){
+    renderLeyenda(d);
+
+    const bn = $('overallBanner');
+    const fallos = [];
+    if (!r.pilaresDentro) fallos.push('columns outside footing');
+    if (!r.pilaresNoSolapan) fallos.push('columns overlap');
+    if (!r.cantoMinOK) fallos.push('minimum depth');
+    if (r.sinEquilibrio) fallos.push('loss of equilibrium');
+    if (r.calculoOK){
+      if (!r.okSigmaMed) fallos.push('mean stress σmed');
+      if (!r.okSigmaMax) fallos.push('maximum stress σmax');
+      if (!r.okSigmaMin) fallos.push('uplift / detachment');
+      if (!r.okRigidez) fallos.push('rigidity β·L');
+      if (d.exigirV2H && !r.v2h) fallos.push('cantilever v ≤ 2h');
+      if (!r.okDesl) fallos.push('sliding');
+      if (!r.okVuelco) fallos.push('overturning');
+    }
+    const ok = fallos.length===0;
+    bn.className = 'overall-banner ' + (ok?'pass':'fail');
+    bn.innerHTML = `<div><div class="big">${ok?'FOOTING DESIGN VERIFIED':'CHECKS NOT SATISFIED'}</div>
+      <div class="sub">${ok?'All structural & geotechnical verification criteria are satisfied':'Failed checks: '+fallos.join(' · ')}</div></div>
+      <div class="sub">A×B×H = ${fmt(r.A*100,0)}×${fmt(r.B*100,0)}×${fmt(r.H*100,0)} cm · V = ${fmt(r.A*r.B*r.H,2)} m³</div>`;
+
+    let out = '';
+
+    out += group('System Geometry','consistency checks',
+      row('Columns inside footing perimeter', `ext. overhangs ${fmt(r.v1izq*100,1)} / ${fmt(r.v2der*100,1)} cm`,
+          `${fmt(Math.min(r.v1izq,r.v2der)*100,1)} cm`, r.pilaresDentro) +
+      row('Transverse cantilever overhangs', `B/2 − b/2`, `${fmt(r.vB1*100,1)} / ${fmt(r.vB2*100,1)} cm`, r.vB1>=-1e-9&&r.vB2>=-1e-9) +
+      row('Clear distance between columns', 'D₁₂ − a₁/2 − a₂/2', `${fmt(r.luzLibre*100,1)} cm`, r.pilaresNoSolapan) +
+      row('Constructive minimum depth', `H ≥ ${fmt(d.hMinConstructivo*100,0)} cm`, `${fmt(r.H*100,0)} cm`, r.cantoMinOK) +
+      info('Optimal d<sub>C</sub> (centers resultant)', `${fmt(dCoptimo(d)*100,1)} cm · current ${fmt(r.dC*100,1)} cm`) +
+      info('Residual geometric eccentricity', `${fmt(((d.N1*r.x1+d.N2*r.x2)/(d.N1+d.N2||1))*100,1)} cm`)
+    );
+
+    const sadm = d.sigmaAdm;
+    out += group('Ground Bearing Pressures','envelope of 4 load cases',
+      row('σ mean ≤ σ<sub>adm</sub>', `N<sub>tot</sub>/(A·B) · limit ${fmt(sadm,0)} kPa`,
+          `${fmt(r.sigmaMed,1)} kPa`, r.okSigmaMed, r.rSigmaMed) +
+      row(`σ maximum ≤ ${fmt(d.kSigmaMax,2)}·σ<sub>adm</sub>`, `limit ${fmt(d.kSigmaMax*sadm,0)} kPa · case ${r.casoGobierna?r.casoGobierna.id:'—'}`,
+          `${fmt(r.sigmaMaxEnv,1)} kPa`, r.okSigmaMax, r.rSigmaMax) +
+      row('σ minimum ≥ 0 · no uplift', `contact area ${fmt(r.fracMin*100,1)} % of base`,
+          `${fmt(r.sigmaMinEnv,1)} kPa`, r.okSigmaMin) +
+      info('Total axial N at foundation base', `${fmt(r.NC,1)} kN`) +
+      info('Self-weight + surface loads', `${fmt(r.PP,1)} + ${fmt(r.Qsup,1)} kN`) +
+      info('Maximum eccentricities |e<sub>A</sub>| / |e<sub>B</sub>|', `${fmt(r.exAbs*100,1)} / ${fmt(r.eyAbs*100,1)} cm`) +
+      info('Middle third kern A/6 · B/6', `${fmt(r.A*100/6,1)} / ${fmt(r.B*100/6,1)} cm`)
+    );
+
+    out += group('Relative Rigidity','Hetényi · Winkler criterion',
+      row('β·L ≤ limit', `limit ${fmt(d.betaLim,4)} (π/2 = 1.5708)`, `${fmt(r.betaL,4)}`, r.okRigidez, r.rRigidez) +
+      row('Cantilever rigidity v ≤ 2h', `v<sub>max</sub> = ${fmt(r.vMax*100,1)} cm · 2h = ${fmt(2*r.H*100,0)} cm`,
+          `${fmt(r.vMax/(2*r.H),3)}`, d.exigirV2H ? r.v2h : null) +
+      info('β · elastic length 1/β', `${fmt(r.beta,4)} m⁻¹ · ${fmt(r.Lelastica,3)} m`) +
+      info('E<sub>c</sub> · I', `${fmt(r.Ec/1000,0)} MPa · ${fmt(r.I,4)} m⁴`) +
+      info('Subgrade reaction modulus k<sub>s</sub>', `${fmt(d.ks,0)} kN/m³`)
+    );
+
+    out += group('Global Stability','overturning · sliding',
+      row('Sliding resistance', `H<sub>res</sub> = ${fmt(r.Hres,1)} kN · R = ${fmt(r.Rdes,1)} kN · min ${fmt(d.csDeslMin,2)}`,
+          `${fmt(r.csDesl,2)}`, r.okDesl) +
+      row('Overturning direction A', `min ${fmt(d.csVuelcoMin,2)}`, `${fmt(r.csVuelcoA,2)}`, r.csVuelcoA>=d.csVuelcoMin-1e-9) +
+      row('Overturning direction B', `min ${fmt(d.csVuelcoMin,2)}`, `${fmt(r.csVuelcoB,2)}`, r.csVuelcoB>=d.csVuelcoMin-1e-9)
+    );
+
+    let tb = `<table class="cases"><thead><tr>
+      <th>Case</th><th>M<sub>A</sub></th><th>M<sub>B</sub></th><th>e<sub>A</sub></th><th>e<sub>B</sub></th>
+      <th>σ<sub>max</sub></th><th>Contact</th></tr></thead><tbody>`;
+    for (const c of r.casos){
+      const gob = r.casoGobierna === c;
+      tb += `<tr class="${gob?'gob':''}"><td>${c.id}</td>
+        <td>${fmt(c.MA,0)}</td><td>${fmt(c.MB,0)}</td>
+        <td>${fmt(c.ex*100,1)}</td><td>${fmt(c.ey*100,1)}</td>
+        <td>${c.pl.ok?fmt(c.pl.sigmaMax,1):'—'}</td>
+        <td>${c.pl.ok?fmt(c.pl.frac*100,1)+' %':'no eq.'}</td></tr>`;
+    }
+    tb += `</tbody></table>`;
+    out += group('Detail of 4 Extreme Load Combinations','kN·m · cm · kPa', tb);
+
+    $('resultsGroups').innerHTML = out;
+  }
+
+  function actualizar(){
+    const d = leerDatos();
+    const r = evaluar(d, d.A, d.B, d.H, d.dC);
+    drawPlanta(d, r);
+    drawAlzado(d, r);
+    drawMapa('svgMapMax', d, r, 'max');
+    drawMapa('svgMapMin', d, r, 'min');
+    drawMapa('svgMapMed', d, r, 'med');
+    render(d, r);
+  }
+
+  $('btnOptima').addEventListener('click', () => {
+    const nota = $('notaOptima');
+    nota.className = 'btn-note';
+    nota.textContent = 'Calculating optimal footing…';
+    setTimeout(() => {
+      const d = leerDatos();
+      const t0 = performance.now();
+      const best = optimizar(d);
+      const ms = performance.now()-t0;
+      if (!best){
+        nota.className = 'btn-note err';
+        nota.innerHTML = 'No valid footing found within search boundaries (H ≤ 250 cm, expansion ≤ 12 m). Check σ<sub>adm</sub>, k<sub>s</sub>, D₁₂ or the rigidity criterion.';
+        return;
+      }
+      $('Azap').value = fmt(best.A*100,0);
+      $('Bzap').value = fmt(best.B*100,0);
+      $('Hzap').value = fmt(best.H*100,0);
+      $('dC').value   = fmt(best.dC*100,0);
+      actualizar();
+      nota.className = 'btn-note ok';
+      nota.innerHTML = `Minimum volume solution: <b>${fmt(best.A*100,0)} × ${fmt(best.B*100,0)} × ${fmt(best.H*100,0)} cm</b>
+        (V = ${fmt(best.V,2)} m³), d<sub>C</sub> = ${fmt(best.dC*100,0)} cm. Scanned in ${fmt(ms,0)} ms.
+        Starting point for geometric refinement.`;
+    }, 20);
+  });
+
+  document.querySelectorAll('input, select').forEach(e => {
+    e.addEventListener('input', actualizar);
+    e.addEventListener('change', actualizar);
+  });
+  actualizar();
+})();
+  </script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

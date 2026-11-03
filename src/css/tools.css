@@ -70,7 +70,7 @@
 }
 
 .tool-panel.panel-variable {
-  border-top: 4px solid var(--accent-yellow);
+  border-top: 4px solid var(--accent-slate);
 }
 
 .tool-panel-header {
@@ -163,12 +163,12 @@ input[type="text"] {
 input[type="text"]:focus {
   outline: none;
   border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+  box-shadow: 0 0 0 3px rgba(30, 45, 61, 0.12);
 }
 
 .panel-variable input[type="text"]:focus {
-  border-color: var(--accent-yellow);
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+  border-color: var(--accent-slate);
+  box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.15);
 }
 
 input.invalid {
@@ -249,8 +249,8 @@ svg {
 }
 
 .column {
-  fill: #fef3c7;
-  stroke: var(--accent-yellow);
+  fill: #f1f5f9;
+  stroke: var(--accent-slate);
   stroke-width: 1.6;
 }
 
@@ -260,7 +260,7 @@ svg {
 }
 
 .press-fill {
-  fill: rgba(2, 132, 199, 0.15);
+  fill: rgba(30, 45, 61, 0.12);
   stroke: var(--accent-blue);
   stroke-width: 1.4;
 }
@@ -275,7 +275,7 @@ svg {
 .corner-text {
   font-family: var(--font-sans);
   font-size: 10px;
-  fill: #0369a1;
+  fill: var(--accent-slate);
 }
 
 /* Overall Status Banner */

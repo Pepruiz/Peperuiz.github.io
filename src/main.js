@@ -12,18 +12,41 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Smooth Scroll for anchor links (Polyfill-like behavior/Enforcement)
+// Smooth Scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
+    const href = this.getAttribute('href');
+    if (href === '#' || href === '') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const target = document.querySelector(href);
     if (target) {
+      e.preventDefault();
       target.scrollIntoView({
         behavior: 'smooth'
       });
     }
   });
 });
+
+// Logo Click Navigation: Guaranteed Return to Home & Smooth Scroll to Top
+document.querySelectorAll('.logo').forEach(logo => {
+  logo.addEventListener('click', function (e) {
+    const href = this.getAttribute('href') || '';
+    const path = window.location.pathname;
+    const isHomePage = path === '/' || path.endsWith('/index.html') || path.endsWith('/en/') || path.endsWith('/en/index.html');
+    
+    if (isHomePage && (href === '#' || href.endsWith('index.html') || href === '/' || href === '/en/')) {
+      if (window.scrollY > 0) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  });
+});
+
 
 // Mobile Navbar Toggle Logic
 const mobileToggle = document.getElementById('mobileMenuToggle');

@@ -1,13 +1,32 @@
 :root {
-  /* Colors */
+  /* Colors - Identidad Oficial RC Estructuras (Azul Oscuro & Grises Técnicos) */
   --bg-color: #ffffff;
-  --bg-secondary: #f8fafc;
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --accent-blue: #0284c7;
-  --accent-blue-hover: #0369a1;
-  --accent-yellow: #f59e0b;
-  --border-color: #e2e8f0;
+  --bg-secondary: #F8FAFC;
+  --text-primary: #1E2D3D;
+  --text-secondary: #5F6B76;
+  --text-muted: #8E9AA5;
+
+  /* Azul Oscuro Acero Oficial */
+  --accent-blue: #1E2D3D;
+  --accent-blue-hover: #111C26;
+  --accent-blue-light: #EBF0F5;
+  --accent-blue-rgb: 30, 45, 61;
+
+  /* Gama Gris y Pizarra Técnica */
+  --accent-slate: #475569;
+  --accent-slate-hover: #334155;
+  --accent-slate-light: #F1F5F9;
+  --accent-slate-rgb: 71, 85, 105;
+
+  /* Acentos de interfaz (reemplazando dorado por azul oscuro y pizarra sobria) */
+  --accent-copper: #1E2D3D;
+  --accent-copper-hover: #111C26;
+  --accent-copper-light: #334155;
+  --accent-copper-rgb: 30, 45, 61;
+  --accent-yellow: #475569;
+
+  --border-color: #E2E8F0;
+  --border-hover: #94A3B8;
 
   /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -17,3 +36,4 @@
   --container-width: 1200px;
   --header-height: 80px;
 }
+

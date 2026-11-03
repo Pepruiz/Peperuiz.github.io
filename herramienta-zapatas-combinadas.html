@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://rcestructuras.es/herramienta-zapatas-combinadas.html" />
+  <link rel="alternate" hreflang="es" href="https://rcestructuras.es/herramienta-zapatas-combinadas.html" />
+  <link rel="alternate" hreflang="en" href="https://rcestructuras.es/en/combined-footing-tool.html" />
+  <link rel="alternate" hreflang="x-default" href="https://rcestructuras.es/herramienta-zapatas-combinadas.html" />
   <title>Zapatas Combinadas Rígidas - RC Estructuras</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -321,14 +325,27 @@
   <!-- Global Sticky Navbar -->
   <header id="navbar">
     <div class="container nav-container">
-      <a href="index.html" class="logo">RC<span>ESTRUCTURAS</span></a>
-      <nav>
+      <a href="index.html" class="logo" aria-label="RC Estructuras">
+        <img src="/assets/logos/rc_horizontal_color.svg" alt="RC Estructuras" class="brand-logo">
+      </a>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menú de navegación" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      <nav class="nav-menu" id="navMenu">
         <ul>
-          <li><a href="index.html#about">Conócenos</a></li>
+          <li><a href="index.html#about">Quiénes Somos</a></li>
+          <li><a href="index.html#services">Servicios</a></li>
           <li><a href="index.html#projects">Proyectos</a></li>
-          <li><a href="herramienta-zapatas.html">Herramientas</a></li>
+          <li><a href="herramienta-zapatas.html" class="active">Herramientas</a></li>
           <li><a href="index.html#contact">Contacto</a></li>
         </ul>
+        <div class="lang-switch">
+          <span class="lang-active">ES</span>
+          <span class="lang-sep">|</span>
+          <a href="/en/combined-footing-tool.html" class="lang-link">EN</a>
+        </div>
       </nav>
     </div>
   </header>
@@ -615,7 +632,7 @@
     <div class="container footer-content">
       <p>&copy; 2026 RC Estructuras. Todos los derechos reservados.</p>
       <div class="footer-links">
-        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="https://www.linkedin.com/company/rc-estructuras/?viewAsMember=true" target="_blank" rel="noopener">LinkedIn</a>
         <a href="index.html">Inicio</a>
       </div>
     </div>
